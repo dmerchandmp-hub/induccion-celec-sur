@@ -617,7 +617,7 @@ if(!HOSTED)initCloud();
   function getS(){ try { return (typeof S !== "undefined") ? S : null; } catch(e){ return null; } }
   function stored(){ try { return JSON.parse(localStorage.getItem(KEY) || "null"); } catch(e){ return null; } }
   var st = getS(), prev = (st && st.nda) || stored();
-  if (prev && prev.acepta) { if (st && !st.nda) { st.nda = prev; try { save(); } catch(e){} } return; }
+  // Se muestra siempre al abrir la app: el jurado debe aceptar el acuerdo antes de cualquier actividad.
 
   var esc = function(s){ return String(s || "").replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); };
   var wrap = document.createElement("div"); wrap.id = "nda"; wrap.setAttribute("role","dialog"); wrap.setAttribute("aria-modal","true"); wrap.setAttribute("aria-labelledby","nda-t");
@@ -639,7 +639,7 @@ if(!HOSTED)initCloud();
   function mount(){
     document.body.appendChild(wrap); document.documentElement.style.overflow = "hidden";
     var iN = document.getElementById("nda-in"), iC = document.getElementById("nda-ic"), ok = document.getElementById("nda-ok"), go = document.getElementById("nda-go"), msg = document.getElementById("nda-msg");
-    var s0 = getS(); if (s0) { iN.value = s0.juror || ""; iC.value = s0.cedula || ""; }
+    var s0 = getS(); iN.value = (prev && prev.nombre) || (s0 && s0.juror) || ""; iC.value = (prev && prev.cedula) || (s0 && s0.cedula) || "";
     function upd(){
       var n = iN.value.trim(), c = iC.value.replace(/\s+/g,"");
       document.getElementById("nda-n").textContent = n || "[nombre del jurado]";
@@ -651,7 +651,8 @@ if(!HOSTED)initCloud();
     [iN, iC].forEach(function(x){ x.addEventListener("input", upd); }); ok.addEventListener("change", upd); upd();
     go.addEventListener("click", function(){
       if (go.disabled) return;
-      var rec = { acepta: true, nombre: iN.value.trim(), cedula: iC.value.replace(/\s+/g,""), fecha: new Date().toISOString(), version: VERSION };
+      var now = new Date().toISOString();
+      var rec = { acepta: true, nombre: iN.value.trim(), cedula: iC.value.replace(/\s+/g,""), fecha: (prev && prev.acepta && prev.nombre === iN.value.trim() && prev.fecha) || now, ultimaAceptacion: now, version: VERSION };
       try { localStorage.setItem(KEY, JSON.stringify(rec)); } catch(e){}
       var s = getS();
       if (s) {
