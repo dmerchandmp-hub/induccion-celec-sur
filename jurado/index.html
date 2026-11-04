@@ -589,82 +589,89 @@ if(HOSTED){
 render();
 if(!HOSTED)initCloud();
 </script>
-<!-- Acuerdo de confidencialidad del jurado: bloquea la herramienta hasta que el jurado lo acepte -->
+<!-- Acuerdo de confidencialidad del jurado: paso 1 identificación, paso 2 acuerdo; bloquea la herramienta hasta aceptar -->
 <style>
 #nda{position:fixed;inset:0;z-index:9999;background:rgba(8,20,38,.72);display:flex;align-items:flex-start;justify-content:center;overflow:auto;padding:16px}
 #nda .box{background:#fff;color:#15202D;max-width:760px;width:100%;border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.35);margin:auto;font-family:Arial,Helvetica,sans-serif}
 #nda .hd{background:#0054A4;color:#fff;padding:16px 20px;border-radius:12px 12px 0 0;border-bottom:5px solid #FFCF01}
 #nda .hd small{display:block;color:#FFCF01;font-weight:700;letter-spacing:.05em;font-size:12px}
 #nda .hd h2{margin:4px 0 0;font-size:21px;text-transform:uppercase;color:#fff}
+#nda .hd .st{display:block;margin-top:6px;font-size:12.5px;color:#DCE8F5}
 #nda .bd{padding:16px 20px}
-#nda .txt{max-height:42vh;overflow:auto;border:1px solid #D5DDE7;border-radius:8px;padding:12px 14px;background:#F7F9FC;font-size:14.5px;line-height:1.5;text-align:justify}
+#nda .intro{margin:0 0 12px;font-size:14.5px;line-height:1.45}
+#nda .txt{max-height:48vh;overflow:auto;border:1px solid #D5DDE7;border-radius:8px;padding:12px 14px;background:#F7F9FC;font-size:14.5px;line-height:1.5;text-align:justify}
 #nda .txt p{margin:0 0 10px}
-#nda .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-@media (max-width:560px){#nda .grid{grid-template-columns:1fr}}
-#nda label.f{display:block;font-size:13px;font-weight:700;color:#5A6676;margin-bottom:4px}
-#nda input[type=text]{width:100%;box-sizing:border-box;padding:10px;border:1px solid #B9C6D6;border-radius:8px;font-size:15px}
+#nda label.f{display:block;font-size:13px;font-weight:700;color:#5A6676;margin:10px 0 4px}
+#nda input[type=text]{width:100%;box-sizing:border-box;padding:11px;border:1px solid #B9C6D6;border-radius:8px;font-size:16px}
 #nda .chk{display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-size:14.5px;cursor:pointer}
 #nda .chk input{width:20px;height:20px;margin-top:1px;flex:none}
-#nda .ft{display:flex;justify-content:flex-end;padding:0 20px 18px}
+#nda .ft{display:flex;justify-content:space-between;gap:10px;padding:0 20px 18px}
+#nda .ft.r{justify-content:flex-end}
 #nda button{background:#0054A4;color:#fff;border:0;border-radius:8px;padding:12px 20px;font-size:16px;font-weight:700;cursor:pointer}
-#nda button:disabled{background:#9DAABB;cursor:not-allowed}
+#nda button.sec{background:#E9EFF6;color:#0054A4}
+#nda button:disabled{background:#9DAABB;color:#fff;cursor:not-allowed}
 #nda .msg{font-size:13px;color:#B42318;margin-top:8px;min-height:16px}
+#nda .hidden{display:none}
 </style>
 <script>
 (function(){
   var KEY = "mc2026-jurado-confidencialidad-v1";
-  var VERSION = "Acuerdo de confidencialidad del jurado · Concurso de Proyectos de Mejora 2026 · v1 (04-nov-2026)";
+  var VERSION = "Acuerdo de confidencialidad del jurado · Concurso de Proyectos de Mejora 2026 · v2 (04-nov-2026)";
   function getS(){ try { return (typeof S !== "undefined") ? S : null; } catch(e){ return null; } }
   function stored(){ try { return JSON.parse(localStorage.getItem(KEY) || "null"); } catch(e){ return null; } }
-  var st = getS(), prev = (st && st.nda) || stored();
-  // Se muestra siempre al abrir la app: el jurado debe aceptar el acuerdo antes de cualquier actividad.
-
-  var esc = function(s){ return String(s || "").replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); };
+  var st = getS(), prev = stored() || (st && st.nda) || null;
+  // Se muestra siempre al abrir: primero la identificación del jurado y luego el acuerdo, antes de cualquier actividad.
   var wrap = document.createElement("div"); wrap.id = "nda"; wrap.setAttribute("role","dialog"); wrap.setAttribute("aria-modal","true"); wrap.setAttribute("aria-labelledby","nda-t");
   wrap.innerHTML =
-    '<div class="box"><div class="hd"><small>MES DE LA CALIDAD 2026 · CELEC SUR</small><h2 id="nda-t">Acuerdo de confidencialidad del jurado</h2></div>' +
-    '<div class="bd"><div class="txt" tabindex="0">' +
-    '<p>Yo, <b id="nda-n">[nombre del jurado]</b>, con cédula de identidad número <b id="nda-c">[cédula]</b>, de manera libre y voluntaria, en el uso de mis capacidades y en calidad de MIEMBRO DEL JURADO CALIFICADOR del Concurso Interno de Proyectos de Mejora 2026 del Mes de la Calidad, suscribo el presente Acuerdo de Confidencialidad.</p>' +
+    '<div class="box"><div class="hd"><small>MES DE LA CALIDAD 2026 · CELEC SUR</small><h2 id="nda-t">Identificación del jurado</h2><span class="st" id="nda-st">Paso 1 de 2</span></div>' +
+    '<div id="nda-p1"><div class="bd"><p class="intro">Antes de ingresar a la herramienta de calificación, escriba sus datos. En el siguiente paso deberá leer y aceptar el Acuerdo de Confidencialidad del jurado.</p>' +
+    '<label class="f" for="nda-in">Nombres y apellidos</label><input type="text" id="nda-in" autocomplete="name" placeholder="Nombres y apellidos completos">' +
+    '<label class="f" for="nda-ic">Cédula de identidad</label><input type="text" id="nda-ic" inputmode="numeric" placeholder="Número de cédula">' +
+    '<div class="msg" id="nda-m1"></div></div><div class="ft r"><button id="nda-next" disabled>Continuar</button></div></div>' +
+    '<div id="nda-p2" class="hidden"><div class="bd"><div class="txt" tabindex="0">' +
+    '<p>Yo, <b id="nda-n"></b>, con cédula de identidad número <b id="nda-c"></b>, de manera libre y voluntaria, en el uso de mis capacidades y en calidad de MIEMBRO DEL JURADO CALIFICADOR del Concurso Interno de Proyectos de Mejora 2026 del Mes de la Calidad, suscribo el presente Acuerdo de Confidencialidad.</p>' +
     '<p>Me comprometo a guardar absoluto sigilo y reserva sobre la información de la Unidad de Negocio CELEC SUR de la Empresa Pública Estratégica Corporación Eléctrica del Ecuador CELEC EP que llegue a mi conocimiento de manera directa o indirecta como resultado de mi participación como jurado, incluidos los proyectos postulados, sus fichas (Anexo B), evidencias y datos de los postulantes, así como las calificaciones y deliberaciones del jurado.</p>' +
     '<p>Me comprometo a no usar, ni disponer, ni divulgar, ni publicar por cualquier medio verbal o escrito dicha información, ni a compartir los expedientes o las calificaciones con terceros, ni aprovecharme en utilizarla para efectos ajenos a la evaluación del concurso. Los resultados solo podrán darse a conocer una vez publicados oficialmente por el Comité Organizador.</p>' +
     '<p>Declaro que calificaré con objetividad e imparcialidad y que me excusaré de evaluar los proyectos en los que tenga participación directa o conflicto de interés, conforme al numeral 6.6 de las Bases del concurso.</p>' +
     '<p>Ratifico que me he informado y que quedo sometido a la normativa pertinente sobre la materia; principalmente, quedo advertido de las consecuencias que para estos casos establece la Corporación Eléctrica del Ecuador CELEC EP y la legislación ecuatoriana.</p>' +
     '<p style="margin:0">Los compromisos establecidos en el presente Acuerdo de Confidencialidad se mantendrán vigentes desde su aceptación, sin límite.</p>' +
-    '</div>' +
-    '<div class="grid"><div><label class="f" for="nda-in">Nombres y apellidos</label><input type="text" id="nda-in" autocomplete="name" placeholder="Nombres y apellidos completos"></div>' +
-    '<div><label class="f" for="nda-ic">Cédula de identidad</label><input type="text" id="nda-ic" inputmode="numeric" placeholder="Número de cédula"></div></div>' +
-    '<label class="chk"><input type="checkbox" id="nda-ok"><span><b>Acepto</b> el Acuerdo de Confidencialidad y me comprometo a cumplirlo.</span></label>' +
-    '<div class="msg" id="nda-msg"></div></div>' +
-    '<div class="ft"><button id="nda-go" disabled>Aceptar y continuar</button></div></div>';
+    '</div><label class="chk"><input type="checkbox" id="nda-ok"><span><b>Acepto</b> el Acuerdo de Confidencialidad y me comprometo a cumplirlo.</span></label></div>' +
+    '<div class="ft"><button class="sec" id="nda-back">Volver</button><button id="nda-go" disabled>Aceptar y continuar</button></div></div></div>';
   function mount(){
     document.body.appendChild(wrap); document.documentElement.style.overflow = "hidden";
-    var iN = document.getElementById("nda-in"), iC = document.getElementById("nda-ic"), ok = document.getElementById("nda-ok"), go = document.getElementById("nda-go"), msg = document.getElementById("nda-msg");
+    var $n = function(id){ return document.getElementById(id); };
+    var iN = $n("nda-in"), iC = $n("nda-ic"), next = $n("nda-next"), m1 = $n("nda-m1"), ok = $n("nda-ok"), go = $n("nda-go");
     var s0 = getS(); iN.value = (prev && prev.nombre) || (s0 && s0.juror) || ""; iC.value = (prev && prev.cedula) || (s0 && s0.cedula) || "";
-    function upd(){
-      var n = iN.value.trim(), c = iC.value.replace(/\s+/g,"");
-      document.getElementById("nda-n").textContent = n || "[nombre del jurado]";
-      document.getElementById("nda-c").textContent = c || "[cédula]";
-      var valid = n.split(/\s+/).length >= 2 && /^[0-9A-Za-z-]{6,15}$/.test(c);
-      go.disabled = !(valid && ok.checked);
-      msg.textContent = ok.checked && !valid ? "Escriba su nombre completo (nombres y apellidos) y su número de cédula." : "";
+    var name = function(){ return iN.value.trim().replace(/\s+/g," "); }, ced = function(){ return iC.value.replace(/\s+/g,""); };
+    function valid(){ return name().split(" ").length >= 2 && /^[0-9A-Za-z-]{6,15}$/.test(ced()); }
+    function upd1(){ next.disabled = !valid(); m1.textContent = (name() || ced()) && !valid() ? "Escriba su nombre completo (nombres y apellidos) y su número de cédula." : ""; }
+    [iN, iC].forEach(function(x){ x.addEventListener("input", upd1); x.addEventListener("keydown", function(e){ if (e.key === "Enter" && valid()) step(2); }); });
+    function step(k){
+      $n("nda-p1").classList.toggle("hidden", k !== 1); $n("nda-p2").classList.toggle("hidden", k !== 2);
+      $n("nda-t").textContent = k === 1 ? "Identificación del jurado" : "Acuerdo de confidencialidad del jurado";
+      $n("nda-st").textContent = "Paso " + k + " de 2";
+      if (k === 2) { $n("nda-n").textContent = name(); $n("nda-c").textContent = ced(); ok.checked = false; go.disabled = true; wrap.scrollTop = 0; }
+      else setTimeout(function(){ iN.focus(); }, 30);
     }
-    [iN, iC].forEach(function(x){ x.addEventListener("input", upd); }); ok.addEventListener("change", upd); upd();
+    next.addEventListener("click", function(){ if (valid()) step(2); });
+    $n("nda-back").addEventListener("click", function(){ step(1); });
+    ok.addEventListener("change", function(){ go.disabled = !ok.checked; });
     go.addEventListener("click", function(){
-      if (go.disabled) return;
+      if (go.disabled || !valid()) return;
       var now = new Date().toISOString();
-      var rec = { acepta: true, nombre: iN.value.trim(), cedula: iC.value.replace(/\s+/g,""), fecha: (prev && prev.acepta && prev.nombre === iN.value.trim() && prev.fecha) || now, ultimaAceptacion: now, version: VERSION };
+      var rec = { acepta: true, nombre: name(), cedula: ced(), fecha: (prev && prev.acepta && prev.nombre === name() && prev.fecha) || now, ultimaAceptacion: now, version: VERSION };
       try { localStorage.setItem(KEY, JSON.stringify(rec)); } catch(e){}
       var s = getS();
       if (s) {
         s.nda = rec; s.juror = rec.nombre; s.cedula = rec.cedula;
         var j = document.getElementById("juror"), c = document.getElementById("cedula");
-        if (j) { j.value = rec.nombre; } if (c) { c.value = rec.cedula; }
+        if (j) j.value = rec.nombre; if (c) c.value = rec.cedula;
         try { save(); } catch(e){}
         try { if (typeof render === "function") render(); } catch(e){}
       }
       wrap.remove(); document.documentElement.style.overflow = "";
     });
-    setTimeout(function(){ iN.focus(); }, 50);
+    upd1(); step(1);
   }
   if (document.body) mount(); else document.addEventListener("DOMContentLoaded", mount);
 })();
