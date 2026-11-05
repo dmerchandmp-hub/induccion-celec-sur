@@ -1,0 +1,8 @@
+const CACHE='jurado-foto-csr-v1';
+const FILES=["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png", "./logo.png", "./fotos/F-02.jpg", "./fotos/F-03.jpg", "./fotos/F-04.jpg", "./fotos/F-05.jpg", "./fotos/F-06.jpg", "./fotos/F-07.jpg", "./fotos/F-08.jpg", "./fotos/F-09.jpg", "./fotos/F-10.jpg", "./fotos/F-11.jpg", "./fotos/F-12.jpg", "./fotos/F-13.jpg", "./fotos/F-14.jpg", "./fotos/F-15.jpg", "./fotos/F-16.jpg", "./fotos/F-17.jpg", "./fotos/F-18.jpg", "./fotos/t/F-02.jpg", "./fotos/t/F-03.jpg", "./fotos/t/F-04.jpg", "./fotos/t/F-05.jpg", "./fotos/t/F-06.jpg", "./fotos/t/F-07.jpg", "./fotos/t/F-08.jpg", "./fotos/t/F-09.jpg", "./fotos/t/F-10.jpg", "./fotos/t/F-11.jpg", "./fotos/t/F-12.jpg", "./fotos/t/F-13.jpg", "./fotos/t/F-14.jpg", "./fotos/t/F-15.jpg", "./fotos/t/F-16.jpg", "./fotos/t/F-17.jpg", "./fotos/t/F-18.jpg"];
+self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)))});
+self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k.startsWith('jurado-foto')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
+// Red primero (para recibir actualizaciones), caché si no hay conexión.
+self.addEventListener('fetch',e=>{if(e.request.method!=='GET'||new URL(e.request.url).origin!==location.origin)return;
+ e.respondWith(fetch(e.request).then(res=>{if(res.ok){const cp=res.clone();const k=new URL(e.request.url);k.search='';caches.open(CACHE).then(c=>c.put(k.toString(),cp))}return res})
+ .catch(()=>{const k=new URL(e.request.url);k.search='';return caches.match(k.toString()).then(r=>r||caches.match('./index.html'))}))});

@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0054A4">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-title" content="Jurado Fotografia CSR">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="robots" content="noindex,nofollow">
+<title>Jurado Fotografia CSR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --azul:#0054A4;--amarillo:#FFCF01;--rojo:#EE3124;
+  --bg:#F3F5F8;--surface:#FFF;--surface2:#E9EFF6;--fg:#15202D;--muted:#5A6676;--line:#D5DDE7;
+  --ok:#1E7F45;--okbg:#DDF2E5;--warn:#7A5D00;--warnbg:#FFF3C4;--bad:#B42318;--badbg:#FDE3E0;--info:#0054A4;--infobg:#DCE8F5;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;--body:"Barlow",Arial,Helvetica,sans-serif;
+  --st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#0E1622;--surface:#152131;--surface2:#1C2C40;--fg:#E7EDF5;--muted:#9DAABB;--line:#2A3B52;
+  --ok:#5FD08F;--okbg:#173A28;--warn:#FFD95A;--warnbg:#3A3214;--bad:#FF8A7D;--badbg:#43201D;--info:#7FB4F0;--infobg:#1A3352;color-scheme:dark}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.45}
+button,input,textarea{font:inherit;color:inherit}
+header{position:sticky;top:0;z-index:20;background:var(--azul);color:#fff;padding:calc(var(--st) + 10px) 14px 10px;display:flex;align-items:center;gap:10px;border-bottom:3px solid var(--amarillo)}
+header img{height:30px;background:#fff;border-radius:6px;padding:3px 6px}
+header .t{flex:1;min-width:0}
+header .t b{display:block;font-family:var(--display);font-size:19px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+header .t span{font-size:12px;opacity:.85}
+#hprog{font-size:12px;padding:3px 9px;border-radius:999px;background:rgba(255,255,255,.16);white-space:nowrap;font-weight:600}
+main{padding:14px 14px calc(84px + var(--sb));max-width:720px;margin:0 auto}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:1px solid var(--line);display:flex;padding-bottom:var(--sb)}
+nav.tabs button{flex:1;border:0;background:none;padding:9px 2px 8px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:var(--muted);cursor:pointer}
+nav.tabs button svg{width:22px;height:22px}
+nav.tabs button[aria-selected=true]{color:var(--azul);font-weight:600}
+@media (prefers-color-scheme:dark){nav.tabs button[aria-selected=true]{color:var(--info)}}
+h1,h2,h3{font-family:var(--display);margin:0 0 8px;line-height:1.15}
+h1{font-size:26px}h2{font-size:21px}h3{font-size:22px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.meta{color:var(--muted);font-size:13px}
+.note{color:var(--muted);font-size:14px;margin:4px 0 10px}
+label.fld{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}
+input[type=text],textarea{width:100%;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:12px;font-size:16px}
+textarea{min-height:96px;resize:vertical}
+input:focus,textarea:focus{outline:2px solid var(--azul);outline-offset:0;border-color:transparent}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:12px;padding:13px 16px;font-weight:600;background:var(--azul);color:#fff;cursor:pointer;min-height:48px;text-decoration:none;font-size:16px}
+.btn.sec{background:var(--surface2);color:var(--fg)}
+.btn.ghost{background:none;border:1px solid var(--line);color:var(--fg)}
+.btn.warn{background:var(--badbg);color:var(--bad)}
+.btn.block{width:100%}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.pill{display:inline-block;font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;white-space:nowrap}
+.p-ok{background:var(--okbg);color:var(--ok)}.p-info{background:var(--infobg);color:var(--info)}.p-warn{background:var(--warnbg);color:var(--warn)}.p-bad{background:var(--badbg);color:var(--bad)}.p-mut{background:var(--surface2);color:var(--muted)}
+.prog{height:8px;background:var(--surface2);border-radius:99px;overflow:hidden;margin:8px 0 4px}
+.prog i{display:block;height:100%;background:var(--ok);border-radius:99px;transition:width .3s}
+.kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.kpi div{background:var(--surface2);border-radius:12px;padding:10px;text-align:center}
+.kpi b{display:block;font-family:var(--display);font-size:24px}
+.kpi span{font-size:12px;color:var(--muted)}
+table.t{width:100%;border-collapse:collapse;font-size:14px}
+table.t th,table.t td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+table.t th{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+table.t td.n,table.t th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.scale-tab td:first-child{font-family:var(--display);font-weight:700;font-size:18px;width:28px}
+/* Galería */
+.filters{display:flex;gap:6px;overflow-x:auto;margin-bottom:12px;padding-bottom:2px}
+.filters button{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 13px;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer}
+.filters button[aria-pressed=true]{background:var(--azul);border-color:var(--azul);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:560px){.grid{grid-template-columns:repeat(3,1fr)}}
+.ph{position:relative;border:0;padding:0;background:var(--surface);border-radius:14px;overflow:hidden;text-align:left;cursor:pointer;border:1px solid var(--line);display:flex;flex-direction:column}
+.ph img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:#0b0f16}
+.ph .cap{padding:8px 9px 10px}
+.ph .cap b{font-family:var(--display);font-size:15px;color:var(--info)}
+.ph .cap div{font-size:13px;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-weight:600}
+.ph .badge{position:absolute;top:8px;right:8px;font-family:var(--display);font-weight:700;font-size:17px;padding:2px 9px;border-radius:999px;background:rgba(0,0,0,.6);color:#fff}
+.ph.done .badge{background:var(--ok)}
+.ph.part .badge{background:#B88A00}
+.ph.exc{opacity:.6}
+/* Detalle */
+#detail{position:fixed;inset:0;z-index:40;background:var(--bg);overflow-y:auto;display:none;-webkit-overflow-scrolling:touch}
+#detail.on{display:block}
+#detail .dh{position:sticky;top:0;z-index:5;background:var(--azul);color:#fff;padding:calc(var(--st) + 8px) 8px 8px;display:flex;align-items:center;gap:6px}
+#detail .dh button{border:0;background:rgba(255,255,255,.14);color:#fff;border-radius:10px;min-width:44px;height:40px;font-size:15px;font-weight:600;padding:0 12px;cursor:pointer}
+#detail .dh b{flex:1;text-align:center;font-family:var(--display);font-size:19px}
+#detail .body{padding:0 0 calc(110px + var(--sb));max-width:720px;margin:0 auto}
+#detail .inner{padding:14px}
+.hero{position:relative;background:#0b0f16;display:flex;justify-content:center;cursor:zoom-in}
+.hero img{max-width:100%;max-height:62vh;display:block}
+.hero span{position:absolute;right:10px;bottom:10px;background:rgba(0,0,0,.6);color:#fff;border-radius:8px;padding:4px 9px;font-size:12.5px}
+.desc{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:15px;white-space:pre-line;margin-bottom:12px}
+details.info{background:var(--surface);border:1px solid var(--line);border-radius:14px;margin-bottom:12px}
+details.info summary{padding:13px 14px;font-weight:600;cursor:pointer;list-style:none;display:flex;justify-content:space-between}
+details.info summary::-webkit-details-marker{display:none}
+details.info summary::after{content:"+";font-size:20px;line-height:1;color:var(--muted)}
+details.info[open] summary::after{content:"–"}
+details.info .in{padding:0 14px 14px}
+dl.f{margin:0}dl.f dt{font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-top:10px;font-weight:600}dl.f dd{margin:2px 0 0;font-size:15px}
+.obs{background:var(--warnbg);color:var(--warn);border-radius:12px;padding:12px;font-size:14px;margin-bottom:12px}
+.obs ul{margin:6px 0 0;padding-left:18px}
+.chk{display:flex;gap:12px;align-items:flex-start;padding:10px 0;cursor:pointer;font-size:15px}
+.chk input{width:22px;height:22px;flex:none;margin-top:1px;accent-color:var(--azul)}
+.crit{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.crit.miss{border-color:var(--rojo)}
+.crit .cn{font-weight:600;font-size:16px;line-height:1.3}
+.crit .cm{font-size:13px;color:var(--muted);margin-top:2px}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:12px 0 4px}
+.scale button{height:52px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);font-family:var(--display);font-size:24px;font-weight:700;cursor:pointer}
+.scale button[aria-pressed=true]{background:var(--azul);border-color:var(--azul);color:#fff}
+.scale-lbl{display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}
+.lvl{font-size:14px;margin-top:8px;padding:9px 11px;background:var(--surface2);border-radius:10px;min-height:20px}
+.rub{font-size:13px;color:var(--muted);margin-top:8px}
+.rub summary{cursor:pointer;color:var(--info);font-weight:600}
+.rub p{margin:6px 0}
+.excused{background:var(--surface2);color:var(--muted);border-radius:12px;padding:16px;text-align:center;margin-bottom:12px}
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--surface);border-top:1px solid var(--line);padding:10px 12px calc(10px + var(--sb));display:flex;gap:10px;align-items:center}
+.dock .tot{flex:1;min-width:0}
+.dock .tot b{font-family:var(--display);font-size:28px;line-height:1}
+.dock .tot span{display:block;font-size:12px;color:var(--muted)}
+.dock .btn{min-height:46px;padding:10px 14px}
+/* Visor */
+#lb{position:fixed;inset:0;z-index:80;background:#05090f;display:none;flex-direction:column}
+#lb.on{display:flex}
+#lb .bar{display:flex;align-items:center;gap:8px;padding:calc(var(--st) + 8px) 10px 8px;color:#fff}
+#lb .bar b{flex:1;font-family:var(--display);font-size:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#lb .bar button{border:0;background:rgba(255,255,255,.16);color:#fff;border-radius:10px;height:40px;padding:0 14px;font-weight:600;cursor:pointer}
+#lb .sc{flex:1;overflow:auto;display:flex;align-items:center;justify-content:center;touch-action:pan-x pan-y pinch-zoom}
+#lb .sc img{max-width:100%;max-height:100%;display:block}
+#lb .sc.z{display:block}
+#lb .sc.z img{max-width:none;max-height:none;width:240%}
+#lb .hint{color:#9DAABB;font-size:12px;text-align:center;padding:6px 0 calc(var(--sb) + 8px)}
+.pad{border:1.5px dashed var(--line);border-radius:12px;background:#fff;touch-action:none;width:100%;height:170px;display:block}
+.toast{position:fixed;left:50%;bottom:calc(92px + var(--sb));transform:translateX(-50%) translateY(20px);background:#15202D;color:#fff;padding:11px 16px;border-radius:12px;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:90;max-width:90vw;text-align:center}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.modal{position:fixed;inset:0;z-index:85;background:rgba(10,20,30,.55);display:none;align-items:flex-end;justify-content:center}
+.modal.on{display:flex}
+.modal .sheet{background:var(--surface);width:100%;max-width:560px;border-radius:18px 18px 0 0;padding:18px 16px calc(16px + var(--sb));max-height:85vh;overflow:auto}
+.rk{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.rk img{width:64px;height:48px;object-fit:cover;border-radius:8px;flex:none}
+.rk .pos{font-family:var(--display);font-size:22px;font-weight:700;width:28px;text-align:center;flex:none}
+.rk .mid{flex:1;min-width:0}
+.rk .mid div{font-weight:600;font-size:14px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rk .av{font-family:var(--display);font-size:22px;font-weight:700;text-align:right}
+.win{background:var(--warnbg);border-radius:12px;padding:10px;margin-bottom:8px}
+.win img{width:100%;max-height:220px;object-fit:cover;border-radius:10px;display:block;margin-bottom:8px}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<header>
+  <img alt="CELEC EP" src="logo.png">
+  <div class="t"><b>Jurado Fotografia CSR</b><span>Mes de la Calidad 2026</span></div>
+  <span id="hprog">0/17</span>
+</header>
+
+<main>
+  <section id="v-inicio">
+    <div class="card">
+      <h1>Hoja de calificación del jurado</h1>
+      <p class="note" style="margin-top:0">Concurso Interno de Fotografía · "Transformando procesos, mejorando resultados"</p>
+      <label class="fld" for="juror">Nombre del jurado</label>
+      <input type="text" id="juror" autocomplete="name" placeholder="Nombres y apellidos">
+      <label class="fld" for="cedula">Cédula</label>
+      <input type="text" id="cedula" inputmode="numeric" placeholder="Número de cédula">
+    </div>
+    <div class="card">
+      <h2>Su avance</h2>
+      <div class="kpi">
+        <div><b id="k-done">0/17</b><span>Calificadas</span></div>
+        <div><b id="k-exc">0</b><span>Excusas</span></div>
+        <div><b id="k-alt">0</b><span>Alertas</span></div>
+      </div>
+      <div class="prog"><i id="k-bar" style="width:0"></i></div>
+      <p class="meta" id="k-msg"></p>
+      <button class="btn block" id="go-calif">Empezar a calificar</button>
+    </div>
+    <div class="card">
+      <h2>Cómo calificar</h2>
+      <ol style="padding-left:20px;margin:6px 0;font-size:15px">
+        <li>Escriba su nombre y cédula arriba.</li>
+        <li>En <b>Fotos</b>, abra cada fotografía. Tóquela para verla en pantalla completa y lea el título y el texto del autor.</li>
+        <li>Asigne una nota de 1 a 5 a cada uno de los cinco criterios. El puntaje sobre 100 se calcula solo.</li>
+        <li>Si es autor de una fotografía, aparece en ella o tiene conflicto de interés, marque <b>Me excuso</b>.</li>
+        <li>Si sospecha que una foto incumple las condiciones (IA, fotomontaje, texto o marca de agua, información confidencial, escena insegura), marque la alerta y explíquelo en comentarios.</li>
+        <li>En <b>Enviar</b>, firme con el dedo y pulse <b>Enviar al Comité</b>: se abre su WhatsApp o correo con el archivo adjunto.</li>
+      </ol>
+      <p class="note">Sus notas se guardan solas en este teléfono. Califique siempre en el mismo dispositivo y navegador.</p>
+    </div>
+    <div class="card">
+      <h2>Criterios (bases del concurso)</h2>
+      <table class="t"><tbody id="crit-tab"></tbody></table>
+      <p class="note">Puntaje del criterio = ponderación × nota ÷ 5. Total máximo 100. Una sola categoría y un único ganador: la foto con el mayor promedio del jurado.</p>
+    </div>
+    <div class="card">
+      <h2>Escala de notas</h2>
+      <table class="t scale-tab"><tbody>
+        <tr><td>1</td><td>Deficiente: el criterio no se cumple.</td></tr>
+        <tr><td>2</td><td>Insuficiente: se cumple de forma débil.</td></tr>
+        <tr><td>3</td><td>Aceptable: se cumple de forma básica.</td></tr>
+        <tr><td>4</td><td>Bueno: se cumple con claridad.</td></tr>
+        <tr><td>5</td><td>Sobresaliente: se cumple de forma destacada.</td></tr>
+      </tbody></table>
+    </div>
+    <div class="card">
+      <h2>Archivos originales</h2>
+      <p class="note" style="margin-top:0">Las fotos de la app son copias livianas. Los originales en alta resolución están en la carpeta del concurso en SharePoint (requiere el acceso que se le compartió).</p>
+      <a class="btn sec block" id="lk-fold" target="_blank" rel="noopener">Abrir carpeta de fotografías</a>
+      <p class="note">Si SharePoint le pide iniciar sesión, use la cuenta con la que recibió la invitación (institucional de CELEC o de la Universidad de Cuenca).</p>
+    </div>
+  </section>
+
+  <section id="v-fotos" class="hidden">
+    <div class="filters" id="filters">
+      <button data-f="all" aria-pressed="true">Todas</button>
+      <button data-f="pend" aria-pressed="false">Pendientes</button>
+      <button data-f="done" aria-pressed="false">Calificadas</button>
+    </div>
+    <div class="grid" id="grid"></div>
+    <p class="meta" style="margin-top:12px">17 fotografías admitidas de 18 recibidas. F-01 no se admitió: era un registro de prueba del formulario.</p>
+  </section>
+
+  <section id="v-env" class="hidden">
+    <div class="card">
+      <h2>Mis resultados</h2>
+      <div id="res"></div>
+    </div>
+    <div class="card">
+      <h2>Firma del jurado</h2>
+      <p class="note" style="margin-top:0">Firme con el dedo dentro del recuadro.</p>
+      <canvas id="pad" class="pad"></canvas>
+      <div class="row" style="margin-top:8px">
+        <button class="btn ghost" id="pad-clr">Borrar firma</button>
+        <span class="meta" id="pad-st"></span>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Enviar</h2>
+      <p class="note" style="margin-top:0" id="send-note"></p>
+      <button class="btn block" id="send">Enviar al Comité</button>
+      <div style="height:8px"></div>
+      <button class="btn sec block" id="dl-json">Descargar mis calificaciones (.json)</button>
+      <div style="height:8px"></div>
+      <button class="btn sec block" id="cp-txt">Copiar resumen para WhatsApp</button>
+      <p class="meta" id="send-st" style="margin-top:10px"></p>
+    </div>
+    <div class="card">
+      <button class="btn warn block" id="reset">Borrar todas mis calificaciones</button>
+    </div>
+  </section>
+
+  <section id="v-com" class="hidden">
+    <div class="card">
+      <h2>Cargar calificaciones</h2>
+      <p class="note" style="margin-top:0">Archivos .json que enviaron los jurados por WhatsApp o correo. También sirven los exportados desde la hoja de escritorio.</p>
+      <input type="file" id="imp" accept=".json,application/json" multiple>
+      <p class="meta" id="imp-st"></p>
+      <button class="btn sec block" id="imp-clr" style="margin-top:8px">Quitar archivos cargados</button>
+    </div>
+    <div class="card">
+      <h2>Resultado del jurado</h2>
+      <p class="note" style="margin-top:0">Promedio de los puntajes completos; las excusas no cuentan. Desempate: mayor promedio en Coherencia con el tema. Las 5 primeras van a la exposición.</p>
+      <div id="con"></div>
+      <button class="btn sec block" id="dl-csv" style="margin-top:10px">Descargar consolidado (.csv)</button>
+      <p class="note">El acta firmada con todos los jurados se genera en la hoja de escritorio (Consolidación), cargando los mismos archivos .json.</p>
+    </div>
+  </section>
+</main>
+
+<nav class="tabs" id="tabs">
+  <button data-v="inicio" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Inicio</button>
+  <button data-v="fotos" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3l2-3h6l2 3h3a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="4"/></svg>Fotos</button>
+  <button data-v="env" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg>Enviar</button>
+  <button data-v="com" aria-selected="false" class="hidden" id="tab-com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>Comité</button>
+</nav>
+
+<div id="detail"></div>
+<div id="lb"><div class="bar"><b id="lb-t"></b><button id="lb-x">Cerrar</button></div><div class="sc" id="lb-sc"><img id="lb-i" alt=""></div><div class="hint">Toque dos veces para acercar · pellizque para ampliar</div></div>
+<div class="toast" id="toast"></div>
+<div class="modal" id="modal"><div class="sheet" id="sheet"></div></div>
+
+<script>
+const F=[
+ {n:2,f:"IMG_20250220_164348_099_Christian Jimenez.jpg",t:"Pasos en la Penumbra",l:"Presa Mazar",c:46073,a:"Christian Alexander Jiménez Estrella",ar:"Ingeniería de Mantenimiento y Producción",lt:"Chilcaplaya",d:"Una fotografía que captura la fuerza implacable del agua y su eterno poder erosivo, reflejando no solo lo que existe, sino invocando aquello que ya ha desaparecido.",o:["La misma persona presentó 2 fotografías (F-02 y F-11). El Comité confirma si se admiten ambas."]},
+ {n:3,f:"concurso Sergio Paredes_Sergio Paredes.jpeg",t:"Pequeños ante la inmensidad, gigantes en compromiso",l:"Casa de máquinas Mazar",c:46315,a:"Sergio Ramiro Paredes Quito",ar:"Operación",lt:"Central Mazar",d:"La fotografía muestra la imponente casa de máquinas de la Central Hidroeléctrica Mazar, donde los trabajadores parecen pequeños frente a la magnitud de sus instalaciones. Sin embargo, la verdadera grandeza no está únicamente en la infraestructura, sino en el conocimiento, la responsabilidad y el compromiso de quienes la hacen funcionar. Cada actividad cotidiana refleja cómo la calidad humana, el trabajo en equipo y la mejora continua transforman los procesos en resultados seguros, eficientes y confiables. Porque detrás de cada megavatio generado existe algo más grande que cualquier máquina: el compromiso de la gente."},
+ {n:4,f:"20251208_085430_Boris Galán.jpg",t:"Elevando el futuro de la operación",l:"Central Molino",c:45999,a:"Boris Antonio Galán Auquilla",ar:"Ingeniería de Mantenimiento y Producción",lt:"Central Molino",d:"Esta imagen refleja el resultado del retrofit integral de los puentes grúa de la Central Molino, una mejora que combina tecnología, seguridad y confiabilidad para fortalecer la capacidad operativa de la central"},
+ {n:5,f:"Atardecer subestación_Marco Alarcon.jpg",t:"Entre el fuego del cielo y la energía de las montañas",l:"Subestación “Minas San Francisco”",c:46152,a:"Marco Antonio Alarcón Morales",ar:"Mantenimiento Electrónico Metrología",lt:"Central Minas San Francisco",d:"La fotografía muestra una subestación eléctrica rodeada de montañas, bajo un espectacular atardecer que simboliza la unión entre la naturaleza, la tecnología y el desarrollo energético del Ecuador. Se relaciona con el tema, al representar el compromiso de la Corporación con la innovación, la eficiencia operativa y la mejora continua. Así como el amanecer anuncia nuevas oportunidades, la transformación de los procesos impulsa una gestión más segura, confiable y sostenible, fortaleciendo la generación y transmisión de energía eléctrica para el bienestar y progreso del país."},
+ {n:6,f:"20260501_154132_Pablo Ñauta.jpg",t:"Donde termina la oscuridad, comienza la innovación",l:"Túnel del desagüe de fondo de la Central Mazar",c:46143,a:"Pablo Gustavo Ñauta Uzhca",ar:"Mantenimiento Mecánico Mazar",lt:"Central Mazar",d:"En las profundidades del desagüe de fondo de la Central Hidroeléctrica Mazar, una luz al final del túnel simboliza el camino hacia la mejora continua. La imagen refleja el esfuerzo silencioso de quienes, enfrentando condiciones exigentes, transforman desafíos en oportunidades.\n\nCada inspección, cada intervención y cada decisión técnica contribuyen a optimizar procesos, fortalecer la seguridad y garantizar la confiabilidad de nuestras instalaciones.\n\nPorque transformar procesos no siempre significa crear algo nuevo, sino iluminar lo que pocos ven, mejorar lo que otros no perciben y alcanzar resultados que benefician a todos."},
+ {n:7,f:"García_Carlos_Energía_que_transforma_vidas.jp_Carlos Garcia.jpeg",t:"Energía que transforma vidas",l:"Santa Rita (Amaluza)",c:46313,a:"Carlos Freddy García Ávila",ar:"Operación",lt:"Central Sopladora",d:"La fotografía refleja el potencial hídrico de la cuenca del río Paute, donde el agua representa el origen de una energía esencial para el desarrollo del Ecuador. En el Complejo Hidroeléctrico Paute Integral, transformar este recurso en electricidad requiere procesos eficientes, tecnología, innovación, control y compromiso con la calidad. La mejora continua de estos procesos fortalece la disponibilidad y confiabilidad operativa, promueve el uso responsable de los recursos y contribuye a garantizar la continuidad del servicio eléctrico. Así generamos energía que impulsa el progreso, contribuye al bienestar de las personas y transforma vidas."},
+ {n:8,f:"Ochoa_Carlos_Fusion_Carlos Ochoa.jpg",t:"FUSIÓN",l:"Ventana L1",c:46291,a:"Carlos Esteban Ochoa Cisneros",ar:"Operación",lt:"Central Hidroeléctrica Paute - Molino",d:"Al fondo se avistan dos túneles históricos, testigos del proceso constructivo de la Central Sopladora. Hoy, su presencia dialoga en perfecta armonía con el cauce natural del río y el entorno boscoso. Esta imagen representa la fusión ideal entre el avance de la ingeniería y la naturaleza, lograda mediante la aplicación estricta de normas y procedimientos ambientales. En CELEC SUR, la mejora continua de nuestros procesos operativos garantiza que la tecnología y el respeto por el ecosistema caminen de la mano, transformando el recurso hídrico en energía limpia y resultados visibles para el país."},
+ {n:9,f:"fotografia participacion_Veronica Aucancela.jpeg",t:"Lo que no se mide, no se puede mejorar",l:"Desagüe de fondo, presa Minas San Francisco",c:46317,a:"Verónica Aucancela Guamán",ar:"Ingeniería M&P",lt:"Centrales de Generación",d:"La confiabilidad del equipamiento con lleva la aplicación de un mantenimiento seguro, medible, y orientado a la mejora continua. En la fotografía se observa a un técnico realizando la medición del blindaje del desagüe de fondo en una de las compuertas de la presa Minas San Francisco ubicado a 750 msnm, estas actividades permiten evaluar el nivel de desgastes para planificar acciones de mantenimiento oportunas."},
+ {n:10,f:"s.chacha_Santiago Chacha.jpeg",t:"Precisión y Potencia",l:"Central Molino (overhaul U#2)",c:46311,a:"Byron Santiago Chacha Maxi",ar:"Operación",lt:"Central Molino",d:"En la imagen destaca la coordinación del equipo, la planificación del trabajo y la precisión técnica necesarios para optimizar el desempeño y el compromiso del personal que permiten aumentar la confiabilidad operativa, prolongar la vida útil y fortalecer la excelencia institucional."},
+ {n:11,f:"WhatsApp Image 2026-10-28 at 3.38.12 PM (1)_Christian Jimenez.jpeg",t:"La huella de la Ingeniería",l:"Presa Mazar",c:46315,a:"Christian Alexander Jiménez Estrella",ar:"Ingeniería de Mantenimiento y Producción",lt:"Chilcaplaya",d:"Más allá del concreto y el enrocado, esta presa representa el motor de escuelas, hospitales y hogares en todo el país. Al aprovechar los recursos renovables de manera estratégica, Mazar no solo mitiga el cambio climático al reducir la dependencia de combustibles fósiles, sino que garantiza la seguridad energética y el bienestar de millones de ciudadanos.",o:["La misma persona presentó 2 fotografías (F-02 y F-11). El Comité confirma si se admiten ambas."]},
+ {n:12,f:"Abad_Daniel_Medir para Decidir_Daniel Abad.jpg",t:"Medir para Decidir",l:"Embalse Mazar",c:46294,a:"Daniel Alejandro Abad Apuango",ar:"Ingeniería de Mantenimiento y Producción",lt:"Campamento Guarumales",d:"Innovación y Tecnología. La calidad comienza con información obtenida en campo. Personas, instrumentos y conocimiento técnico se reúnen sobre el agua para comprender las condiciones del embalse y sustentar decisiones de Ingeniería. Cada registro aporta al análisis que orienta la operación y el mantenimiento de las Unidades de Generación. En CELEC SUR, la tecnología cobra sentido cuando el trabajo del equipo convierte las mediciones en información útil para cuidar los activos y apoyar la generación eléctrica.",o:["La misma persona presentó 2 fotografías (F-12 y F-13). El Comité confirma si se admiten ambas."]},
+ {n:13,f:"Abad_Daniel_Mi Aporte Genera_Daniel Abad.jpg",t:"Mi aporte Genera",l:"Embalse Amaluza",c:46296,a:"Daniel Alejandro Abad Apuango",ar:"Ingeniería de Mantenimiento y Producción",lt:"Guarumales",d:"En Amaluza, cada esfuerzo cuenta para que la energía siga fluyendo. Este remolcador apoya a la draga en la tarea de retirar los sedimentos del embalse: una labor poco visible, pero valiosa para su gestión. Detrás del equipo está el compromiso de quienes aportan su conocimiento y dedicación en cada jornada. Porque la generación también se sostiene con estas manos, con este trabajo y con la convicción de servir al país. El motor es humano; el propósito, dar energía al Ecuador.",o:["La misma persona presentó 2 fotografías (F-12 y F-13). El Comité confirma si se admiten ambas."]},
+ {n:14,f:"Eduardo_Romero_Compromiso a bordo_Eduardo Romero.jpeg",t:"Compromiso a bordo",l:"Embalse Minas San Francisco",c:46188,a:"Jorge Eduardo Romero Jiménez",ar:"Ingeniería de Mantenimiento y Producción",lt:"Guarumales",d:"El trabajo de Ingeniería también se realiza sobre el agua. Acercarse al embalse permite conocer el entorno en el que operan nuestros activos y apoyar las campañas técnicas que sustentan su gestión. La calidad diaria se construye con preparación, observación y compromiso en campo. Esta escena reconoce a las personas que hacen posible ese acercamiento y recuerda que el cuidado de la generación requiere conocer de primera mano sus condiciones."},
+ {n:15,f:"Mariuxi Ortiz  - Navegando con proposito_Mariuxi Ortíz.jpeg",t:"Navegando con propósito",l:"Embalse Minas San Francisco",c:46218,a:"Mariuxi Ortiz",ar:"Ingeniería de Mantenimiento y Producción",lt:"Cuenca",d:"Frente a la infraestructura que transforma el agua en energía, Ingeniería reúne información para comprender el embalse. La instrumentación y el trabajo de campo aportan datos que permiten fundamentar recomendaciones de operación y mantenimiento. La calidad se construye al observar, medir y analizar con un propósito: conocer las condiciones de nuestros activos para orientar su cuidado. Detrás de cada decisión técnica está el compromiso de un equipo con la generación eléctrica del país."},
+ {n:16,f:"FOTOGRAFIA JUAN ESCUDERO_Juan Escudero.jpg",t:"Raíces que nos unen",l:"Oficina de Ingeniería",c:46167,a:"Juan Carlos Escudero Astudillo",ar:"Ingeniería de la Producción",lt:"Campamento Guarumales",d:"La calidad también se expresa en la capacidad de trabajar juntos por un propósito compartido. Con herramientas, árboles y compromiso, el equipo de Ingeniería participa en el cuidado del entorno que acompaña nuestra actividad hidroeléctrica. Cada persona aporta a una tarea común y hace visible una responsabilidad que va más allá de su especialidad. Sembrar juntos representa el compromiso de CELEC SUR con el trabajo colaborativo y el cuidado de la naturaleza."},
+ {n:17,f:"ENTRAÑAS_Marcelo Buestán.jpg",t:"En las entrañas de la energía",l:"Interior del túnel de carga de la Central Minas San Francisco",c:46150,a:"Marcelo Fernando Buestán Guamán",ar:"Ingeniería de Mantenimiento y Producción",lt:"Arenales",d:"En el interior del túnel hidráulico de la central Minas San Francisco, a las 22h46, el equipo técnico demuestra que el compromiso trasciende los horarios. Cada paso de la inspección combina conocimiento y trabajo conjunto para identificar necesidades de mantenimiento y convertir las observaciones en decisiones oportunas. La fotografía refleja la dedicación de quienes, aun cuando termina la jornada, continúan trabajando para fortalecer la seguridad y confiabilidad de la infraestructura y contribuir a la continuidad de la generación eléctrica."},
+ {n:18,f:"20260219_110937_Mauricio Bacuilima.jpg",t:"Eco de los Andes: el camino del agua hacia la luz",l:"Embalse Minas San Francisco",c:46072,a:"Mauricio Bacuilima",ar:"Ingeniería",lt:"Mazar",d:"Monitoreo de los sedimentos del embalse de Minas San Francisco, permite evaluar las condiciones de servicio del embalse y posibles estrategias de mantenimiento."}
+];
+const CRIT=[
+ {k:"coh",s:"Coherencia",n:"Coherencia con el tema",w:25,q:"Procesos, personas y resultados de CELEC SUR; transformación y mejora, calidad diaria, trabajo colaborativo, innovación, seguridad, energía sostenible, ODS 7, yo contribuyo, resultados visibles.",r:["No se relaciona con el tema del concurso.","Relación general con la calidad o el trabajo institucional, sin mostrar con claridad procesos, personas o resultados.","Muestra de forma directa cómo la mejora de los procesos genera resultados visibles en CELEC SUR."]},
+ {k:"com",s:"Composición",n:"Composición y calidad visual",w:20,q:"Encuadre, enfoque, exposición, luz, color o blanco y negro, equilibrio.",r:["Imagen desenfocada, mal expuesta o con encuadre descuidado.","Técnicamente correcta, con una composición convencional.","Técnica sobresaliente: nitidez, luz y encuadre que refuerzan lo que se quiere mostrar."]},
+ {k:"ori",s:"Originalidad",n:"Originalidad y creatividad",w:20,q:"Punto de vista propio, ángulo, momento o tratamiento novedoso, sin alterar la realidad.",r:["Toma común o repetida, sin punto de vista propio.","Algún elemento original en el ángulo, el momento o el tratamiento.","Mirada propia y novedosa que sorprende sin alterar la realidad."]},
+ {k:"men",s:"Mensaje",n:"Mensaje e impacto",w:20,q:"Claridad y fuerza del mensaje; aporte del título y del texto (máximo 100 palabras).",r:["No transmite un mensaje claro y el texto no aporta.","El mensaje se entiende, apoyado en el título y el texto.","Comunica por sí sola un mensaje claro y memorable, reforzado por el título y el texto."]},
+ {k:"val",s:"Valor inst.",n:"Valor institucional",w:15,q:"Aporte a la identidad, la cultura de calidad y la difusión de CELEC SUR; aptitud para la exposición.",r:["No aporta a la imagen ni a la cultura institucional.","Útil para difusión interna con un alcance limitado.","Representa la identidad, los valores y los logros de CELEC SUR; apta para difusión y exposición."]}
+];
+const LVL=["","Deficiente","Insuficiente","Aceptable","Bueno","Sobresaliente"];
+const FOLDER="https://celecgob.sharepoint.com/sites/CalidadyProcesos/Documentos%20compartidos/Forms/AllItems.aspx?id="+encodeURIComponent("/sites/CalidadyProcesos/Documentos compartidos/MES DE CALIDAD 2026/CONCURSO DE FOTOGRAFÍA/POSTULACIONES Y RESPALDOS");
+const ROOT="/sites/CalidadyProcesos/Documentos compartidos/MES DE CALIDAD 2026/CONCURSO DE FOTOGRAFÍA/POSTULACIONES Y RESPALDOS/";
+const orig=p=>"https://celecgob.sharepoint.com"+encodeURI(ROOT+p.f).replace(/#/g,"%23")+"?web=1";
+const LS="mc2026-foto-jurado-movil-v1", LSI="mc2026-foto-comite-v1";
+let S={juror:"",cedula:"",sc:{},com:{},exc:{},alert:{},firma:null,firmaFecha:"",enviado:null};
+try{const s=JSON.parse(localStorage.getItem(LS)||"null");if(s)S=Object.assign(S,s);}catch(e){}
+let IMP=[];try{IMP=JSON.parse(localStorage.getItem(LSI)||"[]");}catch(e){}
+
+const $=s=>document.querySelector(s);
+const el=(t,a={},...k)=>{const e=document.createElement(t);for(const[x,v]of Object.entries(a)){if(v==null||v===false)continue;if(x==="class")e.className=v;else if(x==="text")e.textContent=v;else if(x.startsWith("on"))e.addEventListener(x.slice(2),v);else e.setAttribute(x,v===true?"":v);}for(const c of k.flat()){if(c==null||c===false)continue;e.append(c.nodeType?c:document.createTextNode(c));}return e;};
+const fid=p=>"F-"+String(p.n).padStart(2,"0");
+const src=p=>"fotos/"+fid(p)+".jpg", th=p=>"fotos/t/"+fid(p)+".jpg";
+const xd=v=>new Date(Date.UTC(1899,11,30)+v*86400000).toLocaleDateString("es-EC",{timeZone:"UTC",day:"2-digit",month:"short",year:"numeric"});
+const words=s=>(s.trim().match(/\S+/g)||[]).length;
+function score(sc){if(!sc)return null;let t=0,any=false,all=true;for(const c of CRIT){const v=sc[c.k];if(v){any=true;t+=c.w*v/5;}else all=false;}return any?{t:Math.round(t*100)/100,complete:all}:null;}
+const missing=p=>S.exc[p.n]?[]:CRIT.filter(c=>!(S.sc[p.n]||{})[c.k]);
+const state=p=>S.exc[p.n]?"exc":!missing(p).length?"done":score(S.sc[p.n])?"part":"pend";
+function save(){try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){toast("No se pudo guardar en este navegador");}}
+let toastT;function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("on"),2600);}
+function sheet(title,body,actions){$("#sheet").replaceChildren(el("h2",{text:title}),...(Array.isArray(body)?body:[body]),el("div",{style:"display:flex;flex-direction:column;gap:8px;margin-top:14px"},...actions.map(a=>el("button",{class:"btn block "+(a.cls||""),text:a.t,onclick:()=>{$("#modal").classList.remove("on");a.f&&a.f();}}))));$("#modal").classList.add("on");}
+$("#modal").addEventListener("click",e=>{if(e.target.id==="modal")$("#modal").classList.remove("on");});
+
+// Navegación
+let view="inicio";
+function go(v){view=v;document.querySelectorAll("#tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.v===v));document.querySelectorAll("main section").forEach(s=>s.classList.toggle("hidden",s.id!=="v-"+v));render();window.scrollTo(0,0);}
+document.querySelectorAll("#tabs button").forEach(b=>b.addEventListener("click",()=>go(b.dataset.v)));
+const showCom=()=>{const on=location.hash==="#comite";$("#tab-com").classList.toggle("hidden",!on);if(!on&&view==="com")go("inicio");};showCom();window.addEventListener("hashchange",showCom);
+$("#go-calif").addEventListener("click",()=>{const p=F.find(x=>state(x)!=="done"&&state(x)!=="exc");if(p)openP(p.n);else go("env");});
+$("#lk-fold").href=FOLDER;
+$("#juror").value=S.juror;$("#cedula").value=S.cedula;
+$("#juror").addEventListener("input",e=>{S.juror=e.target.value.replace(/\s+/g," ").trim();save();});
+$("#cedula").addEventListener("input",e=>{S.cedula=e.target.value.replace(/\D/g,"");save();});
+$("#crit-tab").replaceChildren(...CRIT.map(c=>el("tr",{},el("td",{},el("b",{text:c.n}),el("div",{class:"meta",text:c.q})),el("td",{class:"n",style:"font-family:var(--display);font-size:20px;font-weight:700",text:c.w+"%"}))));
+
+let filt="all";
+document.querySelectorAll("#filters button").forEach(b=>b.addEventListener("click",()=>{filt=b.dataset.f;document.querySelectorAll("#filters button").forEach(x=>x.setAttribute("aria-pressed",x===b));renderGrid();}));
+function renderGrid(){
+  const list=F.filter(p=>filt==="all"||(filt==="done"?["done","exc"].includes(state(p)):!["done","exc"].includes(state(p))));
+  $("#grid").replaceChildren(...list.map(p=>{const st=state(p),s=score(S.sc[p.n]);
+    return el("button",{class:"ph "+st,onclick:()=>openP(p.n)},el("img",{src:th(p),alt:p.t,loading:"lazy"}),
+      el("span",{class:"badge",text:st==="exc"?"Excusa":s?s.t.toFixed(0):"—"}),
+      el("div",{class:"cap"},el("b",{text:fid(p)}),el("div",{text:p.t})));}));
+  if(!list.length)$("#grid").append(el("p",{class:"meta",text:"No hay fotografías en este filtro."}));
+}
+function renderHome(){
+  const done=F.filter(p=>["done","exc"].includes(state(p))).length;
+  $("#k-done").textContent=done+"/"+F.length;$("#k-exc").textContent=F.filter(p=>S.exc[p.n]).length;$("#k-alt").textContent=F.filter(p=>S.alert[p.n]).length;
+  $("#k-bar").style.width=(done/F.length*100)+"%";$("#hprog").textContent=done+"/"+F.length;
+  $("#k-msg").textContent=done<F.length?"Le faltan "+(F.length-done)+" fotografía(s) por calificar.":"Calificación completa. Firme y envíe sus notas al Comité.";
+  $("#go-calif").textContent=done===0?"Empezar a calificar":done<F.length?"Seguir calificando":"Ir a Enviar";
+}
+
+// Detalle
+let cur=null;
+function openP(n){cur=n;renderDetail();$("#detail").classList.add("on");$("#detail").scrollTop=0;history.pushState({d:1},"");}
+function closeP(){$("#detail").classList.remove("on");cur=null;render();}
+window.addEventListener("popstate",()=>{if($("#lb").classList.contains("on")){$("#lb").classList.remove("on");return;}if(cur!=null)closeP();});
+function navP(d){const i=F.findIndex(p=>p.n===cur);const p=F[i];
+  if(d>0&&missing(p).length){$("#detail").querySelectorAll(".crit").forEach((c,j)=>c.classList.toggle("miss",!(S.sc[p.n]||{})[CRIT[j].k]));toast("Falta calificar "+missing(p).length+" criterio(s) o marcar Me excuso");const m=$("#detail .crit.miss");if(m)m.scrollIntoView({behavior:"smooth",block:"center"});return;}
+  if(d>0&&i===F.length-1){history.back();setTimeout(()=>go("env"),50);return;}
+  cur=F[(i+d+F.length)%F.length].n;renderDetail();$("#detail").scrollTop=0;}
+function renderDetail(){
+  const p=F.find(x=>x.n===cur),D=$("#detail"),i=F.indexOf(p);const sc=S.sc[p.n]||(S.sc[p.n]={});
+  const hdr=el("div",{class:"dh"},el("button",{onclick:()=>history.back(),text:"‹ Fotos"}),el("b",{text:fid(p)+" · "+(i+1)+" de "+F.length}),el("span",{style:"min-width:70px"}));
+  const b=el("div",{class:"body"});
+  b.append(el("div",{class:"hero",onclick:()=>openLB(p)},el("img",{src:src(p),alt:p.t}),el("span",{text:"Ampliar ⤢"})));
+  const inn=el("div",{class:"inner"});b.append(inn);
+  inn.append(el("h3",{text:p.t}),el("p",{class:"meta",style:"margin-top:0",text:p.l+" · "+xd(p.c)}),el("a",{class:"btn sec block",style:"margin-bottom:12px",href:orig(p),target:"_blank",rel:"noopener",text:"Ver original en SharePoint"}),el("div",{class:"desc",text:p.d}),el("p",{class:"meta",style:"margin:-6px 0 12px",text:words(p.d)+" palabras"}));
+  inn.append(el("details",{class:"info"},el("summary",{text:"Datos del autor"}),el("div",{class:"in"},el("dl",{class:"f"},el("dt",{text:"Autor"}),el("dd",{text:p.a}),el("dt",{text:"Área o proceso"}),el("dd",{text:p.ar}),el("dt",{text:"Lugar de trabajo"}),el("dd",{text:p.lt})))));
+  if(p.o)inn.append(el("div",{class:"obs"},el("b",{text:"Observación de admisibilidad"}),el("ul",{},...p.o.map(o=>el("li",{text:o})))));
+  const exc=el("input",{type:"checkbox"});exc.checked=!!S.exc[p.n];exc.addEventListener("change",()=>{S.exc[p.n]=exc.checked;save();renderDetail();});
+  inn.append(el("div",{class:"card",style:"padding:4px 14px"},el("label",{class:"chk"},exc,el("span",{},el("b",{text:"Me excuso"})," de calificar esta foto (soy su autor, aparezco en ella o tengo conflicto de interés)."))));
+  if(S.exc[p.n])inn.append(el("div",{class:"excused",text:"Se excusó de esta fotografía. No se le computa."}));
+  else{
+    for(const c of CRIT){
+      const lvl=el("div",{class:"lvl",text:sc[c.k]?sc[c.k]+" · "+LVL[sc[c.k]]+(sc[c.k]%2?" — "+c.r[(sc[c.k]-1)/2]:""):"Toque una nota de 1 a 5"});
+      const scale=el("div",{class:"scale",role:"group","aria-label":c.n},...[1,2,3,4,5].map(v=>el("button",{"aria-pressed":String(sc[c.k]===v),"aria-label":v+" "+LVL[v],text:String(v),onclick:()=>{sc[c.k]=sc[c.k]===v?undefined:v;save();renderDetail();}})));
+      inn.append(el("div",{class:"crit"},el("div",{class:"cn",text:c.n}),el("div",{class:"cm",text:"Ponderación "+c.w+" % · "+(sc[c.k]?(c.w*sc[c.k]/5).toFixed(1)+" puntos":"sin nota")}),scale,
+        el("div",{class:"scale-lbl"},el("span",{text:"Deficiente"}),el("span",{text:"Sobresaliente"})),lvl,
+        el("details",{class:"rub"},el("summary",{text:"Ver rúbrica"}),el("p",{},el("b",{text:"1: "}),c.r[0]),el("p",{},el("b",{text:"3: "}),c.r[1]),el("p",{},el("b",{text:"5: "}),c.r[2]))));
+    }
+    const al=el("input",{type:"checkbox"});al.checked=!!S.alert[p.n];al.addEventListener("change",()=>{S.alert[p.n]=al.checked;save();});
+    inn.append(el("div",{class:"card",style:"padding:4px 14px"},el("label",{class:"chk"},al,el("span",{},el("b",{text:"Posible incumplimiento: "}),"IA, fotomontaje, texto o marca de agua, foto ajena, información confidencial o escena insegura. Explíquelo en comentarios."))));
+  }
+  const ta=el("textarea",{placeholder:"Fortalezas, aspectos a mejorar, observaciones…"});ta.value=S.com[p.n]||"";ta.addEventListener("input",()=>{S.com[p.n]=ta.value;save();});
+  inn.append(el("div",{class:"card"},el("h3",{text:"Comentarios"}),ta));
+  const last=i===F.length-1;const s=S.exc[p.n]?null:score(sc),m=missing(p).length;
+  const dock=el("div",{class:"dock"},el("button",{class:"btn sec","aria-label":"Foto anterior",onclick:()=>navP(-1),text:"‹"}),
+    el("div",{class:"tot"},el("b",{text:S.exc[p.n]?"Excusa":s?s.t.toFixed(1):"—"}),el("span",{text:S.exc[p.n]?"No se computa":m?"Faltan "+m+" criterio(s)":"Puntaje sobre 100"})),
+    el("button",{class:"btn",onclick:()=>navP(1),text:last?"Terminar":"Siguiente ›"}));
+  const y=D.scrollTop;D.replaceChildren(hdr,b,dock);D.scrollTop=y;
+}
+// Visor ampliado
+function openLB(p){$("#lb-i").src=src(p);$("#lb-t").textContent=fid(p)+" · "+p.t;$("#lb-sc").classList.remove("z");$("#lb").classList.add("on");history.pushState({lb:1},"");}
+$("#lb-x").addEventListener("click",()=>history.back());
+$("#lb-sc").addEventListener("dblclick",e=>{const z=$("#lb-sc").classList.toggle("z");if(z){const s=$("#lb-sc");s.scrollLeft=(s.scrollWidth-s.clientWidth)/2;s.scrollTop=(s.scrollHeight-s.clientHeight)/2;}});
+
+// Enviar
+function myPayload(){return {tipo:"calificacion-jurado-foto-mc2026",origen:"app-movil",confidencialidad:S.nda||null,jurado:S.juror||"(sin nombre)",cedula:S.cedula||"",fecha:new Date().toISOString(),firma:S.firma||null,firmaFecha:S.firmaFecha||"",criterios:CRIT.map(c=>({k:c.k,n:c.n,w:c.w})),sc:S.sc,com:S.com,exc:S.exc,alert:S.alert,enviado:S.enviado};}
+const pend=()=>F.filter(p=>missing(p).length);
+function renderEnv(){
+  const rows=F.map(p=>({p,s:S.exc[p.n]?null:score(S.sc[p.n])})).sort((a,b)=>(b.s?.t??-1)-(a.s?.t??-1));
+  $("#res").replaceChildren(el("table",{class:"t"},el("thead",{},el("tr",{},el("th",{text:"N.º"}),el("th",{text:"Fotografía"}),el("th",{class:"n",text:"/100"}))),
+    el("tbody",{},...rows.map(({p,s})=>el("tr",{},el("td",{style:"white-space:nowrap",text:fid(p)}),el("td",{style:"font-size:13px"},p.t.length>48?p.t.slice(0,46)+"…":p.t,S.alert[p.n]?el("div",{},el("span",{class:"pill p-bad",text:"Alerta"})):null),el("td",{class:"n",text:S.exc[p.n]?"Excusa":s?s.t.toFixed(1)+(s.complete?"":"*"):"—"}))))),el("p",{class:"meta",text:"* Calificación incompleta."}));
+  const pd=pend();$("#send-note").textContent=(pd.length?"Le faltan "+pd.length+" fotografía(s). Puede enviar un avance y volver a enviar después. ":"")+"Al pulsar Enviar se abre su WhatsApp o correo con el archivo de calificaciones adjunto; envíelo al Comité Organizador.";
+  $("#send-st").textContent=S.enviado?"Último envío: "+new Date(S.enviado).toLocaleString("es-EC",{dateStyle:"medium",timeStyle:"short"}):"";
+  drawSig();
+}
+const pad=$("#pad");let drawing=false,dirty=false,ctx;
+function sizePad(){const r=pad.getBoundingClientRect();if(!r.width)return;const dpr=window.devicePixelRatio||1;pad.width=r.width*dpr;pad.height=r.height*dpr;ctx=pad.getContext("2d");ctx.scale(dpr,dpr);ctx.lineWidth=2.4;ctx.lineCap="round";ctx.lineJoin="round";ctx.strokeStyle="#15202D";}
+function drawSig(){sizePad();if(!ctx)return;ctx.clearRect(0,0,pad.width,pad.height);$("#pad-st").textContent=S.firma?"Firma guardada":"Sin firma";if(S.firma){const im=new Image();im.onload=()=>{const r=pad.getBoundingClientRect();const k=Math.min(r.width/im.width,r.height/im.height);ctx.drawImage(im,(r.width-im.width*k)/2,(r.height-im.height*k)/2,im.width*k,im.height*k);};im.src=S.firma;}}
+const pt=e=>{const r=pad.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top];};
+pad.addEventListener("pointerdown",e=>{if(!ctx)sizePad();if(S.firma&&!dirty)ctx.clearRect(0,0,pad.width,pad.height);drawing=true;dirty=true;pad.setPointerCapture(e.pointerId);const[x,y]=pt(e);ctx.beginPath();ctx.moveTo(x,y);});
+pad.addEventListener("pointermove",e=>{if(!drawing)return;const[x,y]=pt(e);ctx.lineTo(x,y);ctx.stroke();});
+const endSig=()=>{if(!drawing)return;drawing=false;S.firma=pad.toDataURL("image/png");S.firmaFecha=new Date().toLocaleDateString("es-EC");dirty=false;save();$("#pad-st").textContent="Firma guardada";};
+pad.addEventListener("pointerup",endSig);pad.addEventListener("pointercancel",endSig);
+$("#pad-clr").addEventListener("click",()=>{S.firma=null;S.firmaFecha="";dirty=false;save();drawSig();});
+const slug=s=>(s||"jurado").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^A-Za-z0-9]+/g,"_");
+function saveFile(name,text,type){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;document.body.append(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},800);}
+$("#dl-json").addEventListener("click",()=>{if(!S.juror){toast("Escriba su nombre en Inicio");go("inicio");return;}saveFile("Calificacion_Fotografia_"+slug(S.juror)+".json",JSON.stringify(myPayload()),"application/json");toast("Archivo descargado");});
+function summaryText(){const L=["Calificación del jurado - Concurso Interno de Fotografía 2026","Jurado: "+(S.juror||"(sin nombre)")+(S.cedula?" - C.I. "+S.cedula:""),"Fecha: "+new Date().toLocaleDateString("es-EC"),"","Puntaje sobre 100 [Coherencia, Composición, Originalidad, Mensaje, Valor institucional]:"];
+  for(const p of F){const ex=S.exc[p.n];const s=ex?null:score(S.sc[p.n]);L.push(fid(p)+" "+p.t.slice(0,45)+": "+(ex?"Me excuso":s?s.t.toFixed(1)+(s.complete?"":" (incompleta)")+" ["+CRIT.map(c=>(S.sc[p.n]||{})[c.k]||"-").join(", ")+"]":"sin calificar")+(S.alert[p.n]?" - ALERTA de posible incumplimiento":""));}
+  return L.join("\n");}
+$("#cp-txt").addEventListener("click",async()=>{try{await navigator.clipboard.writeText(summaryText());toast("Resumen copiado");}catch(e){sheet("Copie el resumen",[el("textarea",{style:"min-height:240px",readonly:true},summaryText())],[{t:"Cerrar"}]);}});
+$("#send").addEventListener("click",()=>{if(!S.juror){toast("Escriba su nombre en Inicio");go("inicio");return;}
+  const pd=pend(),body=[];if(pd.length)body.push(el("p",{class:"note",text:"Faltan por calificar: "+pd.map(fid).join(", ")+". Puede enviar este avance y volver a enviar después."}));
+  if(!S.firma)body.push(el("p",{class:"note",text:"Aún no ha firmado. Puede firmar antes de enviar."}));
+  body.push(el("p",{class:"note",text:"Jurado: "+S.juror+(S.cedula?" · C.I. "+S.cedula:"")+". Se adjunta su archivo de calificaciones para el Comité Organizador."}));
+  sheet("¿Enviar al Comité?",body,[{t:"Enviar",f:share},{t:"Cancelar",cls:"sec"}]);});
+async function share(){S.enviado=new Date().toISOString();save();const name="Calificacion_Fotografia_"+slug(S.juror)+".json";const txt=JSON.stringify(myPayload());const f=new File([txt],name,{type:"application/json"});
+  if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],title:"Calificación del jurado",text:"Calificaciones de "+S.juror+" - Concurso Interno de Fotografía 2026"});toast("Listo");}catch(e){if(e&&e.name!=="AbortError")saveFile(name,txt,"application/json");}}
+  else{saveFile(name,txt,"application/json");sheet("Archivo descargado",el("p",{class:"note",text:"Se guardó "+name+" en su dispositivo. Envíelo al Comité Organizador por correo o WhatsApp."}),[{t:"Entendido"}]);}
+  renderEnv();}
+$("#reset").addEventListener("click",()=>sheet("¿Borrar todas sus calificaciones?",el("p",{class:"note",text:"Se borran notas, excusas, alertas, comentarios y firma de este teléfono. No se puede deshacer."}),[{t:"Borrar todo",cls:"warn",f:()=>{S.sc={};S.com={};S.exc={};S.alert={};S.firma=null;S.firmaFecha="";S.enviado=null;save();render();toast("Calificaciones borradas");}},{t:"Cancelar",cls:"sec"}]));
+
+// Comité
+$("#imp").addEventListener("change",async e=>{let ok=0;for(const f of e.target.files){try{const j=JSON.parse(await f.text());if(j.tipo!=="calificacion-jurado-foto-mc2026")throw 0;IMP=IMP.filter(x=>x.jurado!==j.jurado);IMP.push(j);ok++;}catch(err){toast(f.name+" no es una calificación del concurso de fotografía");}}e.target.value="";try{localStorage.setItem(LSI,JSON.stringify(IMP));}catch(err){}if(ok)toast(ok+" archivo(s) cargado(s)");render();});
+$("#imp-clr").addEventListener("click",()=>{IMP=[];try{localStorage.removeItem(LSI);}catch(e){}render();});
+function consolidated(){
+  const rows=F.map(p=>{const vals=[],coh=[],al=[];for(const j of IMP){if(j.alert&&j.alert[p.n])al.push(j.jurado);if(j.exc&&j.exc[p.n])continue;const sc=(j.sc||{})[p.n];const s=score(sc);if(s&&s.complete){vals.push({j:j.jurado,t:s.t});coh.push(sc.coh);}}
+    return {p,vals,al,avg:vals.length?vals.reduce((a,b)=>a+b.t,0)/vals.length:null,ac:coh.length?coh.reduce((a,b)=>a+b,0)/coh.length:null};}).filter(r=>r.avg!=null);
+  rows.sort((a,b)=>(b.avg-a.avg)||(b.ac-a.ac));
+  rows.forEach((r,i)=>{const eq=o=>o&&Math.abs(o.avg-r.avg)<1e-9&&Math.abs(o.ac-r.ac)<1e-9;r.tie=eq(rows[i-1])||eq(rows[i+1]);});
+  return rows;}
+function renderCom(){
+  $("#imp-st").textContent=IMP.length?"Jurados cargados ("+IMP.length+"): "+IMP.map(x=>x.jurado).join(", "):"Aún no hay archivos cargados.";
+  const rows=consolidated(),c=$("#con");c.replaceChildren();
+  if(!rows.length){c.append(el("p",{class:"meta",text:"Sin calificaciones completas todavía."}));return;}
+  const w=rows[0];c.append(el("div",{class:"win"},el("img",{src:src(w.p),alt:w.p.t}),el("span",{class:"pill p-warn",text:"1.º · Ganador"}),el("div",{style:"font-weight:700;margin-top:4px",text:w.p.t}),el("div",{class:"meta",text:w.p.a+" · "+w.avg.toFixed(2)+" puntos"+(w.tie?" · EMPATE: decide el jurado":"")})));
+  rows.forEach((r,i)=>c.append(el("div",{class:"rk"},el("span",{class:"pos",text:String(i+1)}),el("img",{src:th(r.p),alt:""}),
+    el("div",{class:"mid"},el("div",{text:r.p.t}),el("span",{class:"meta",text:fid(r.p)+" · "+r.vals.length+" jurado(s)"}),i<5?el("span",{class:"pill "+(i===0?"p-warn":"p-ok"),style:"margin-left:6px",text:i===0?"Ganador":"Exposición"}):null,r.tie?el("span",{class:"pill p-bad",style:"margin-left:6px",text:"Empate"}):null,r.al.length?el("div",{class:"meta",style:"color:var(--bad)",text:"Alerta: "+r.al.join(", ")}):null),
+    el("span",{class:"av",text:r.avg.toFixed(2)}))));
+}
+function csvCell(v){v=v==null?"":String(v);return /[";\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}
+$("#dl-csv").addEventListener("click",()=>{const L=[["Puesto","N.º","Título","Autor","N.º jurados","Promedio","Promedio coherencia","Resultado","Empate","Alertas","Detalle por jurado"].join(";")];consolidated().forEach((r,i)=>L.push([i+1,fid(r.p),r.p.t,r.p.a,r.vals.length,r.avg.toFixed(2).replace(".",","),r.ac.toFixed(2).replace(".",","),i===0?"Ganador":i<5?"Exposición":"",r.tie?"Sí":"",r.al.join(", "),r.vals.map(v=>v.j+": "+v.t.toFixed(1)).join(" | ")].map(csvCell).join(";")));saveFile("Consolidado_Concurso_Fotografia_2026.csv","﻿"+L.join("\n"),"text/csv");});
+
+function render(){renderHome();if(view==="fotos")renderGrid();if(view==="env")renderEnv();if(view==="com")renderCom();}
+render();
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+</script>
+<!-- Acuerdo de confidencialidad del jurado: paso 1 identificación, paso 2 acuerdo -->
+<style>
+#nda{position:fixed;inset:0;z-index:9999;background:rgba(8,20,38,.72);display:flex;align-items:flex-start;justify-content:center;overflow:auto;padding:16px}
+#nda .box{background:#fff;color:#15202D;max-width:760px;width:100%;border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,.35);margin:auto}
+#nda .hd{background:#0054A4;color:#fff;padding:16px 18px;border-radius:14px 14px 0 0;border-bottom:5px solid #FFCF01}
+#nda .hd small{display:block;color:#FFCF01;font-weight:700;letter-spacing:.05em;font-size:12px}
+#nda .hd h2{margin:4px 0 0;font-size:21px;color:#fff}
+#nda .hd .st{display:block;margin-top:6px;font-size:12.5px;color:#DCE8F5}
+#nda .bd{padding:16px 18px}
+#nda .intro{margin:0 0 12px;font-size:15px}
+#nda .txt{max-height:46vh;overflow:auto;border:1px solid #D5DDE7;border-radius:10px;padding:12px 14px;background:#F7F9FC;font-size:15px;line-height:1.5}
+#nda .txt p{margin:0 0 10px}
+#nda label.f{display:block;font-size:13px;font-weight:700;color:#5A6676;margin:10px 0 4px}
+#nda input[type=text]{width:100%;padding:12px;border:1px solid #B9C6D6;border-radius:10px;font-size:16px;color:#15202D;background:#fff}
+#nda .chk{color:#15202D}
+#nda .ft{display:flex;justify-content:space-between;gap:10px;padding:0 18px 18px}
+#nda .ft.r{justify-content:flex-end}
+#nda button{background:#0054A4;color:#fff;border:0;border-radius:12px;padding:13px 20px;font-size:16px;font-weight:700;cursor:pointer}
+#nda button.sec{background:#E9EFF6;color:#0054A4}
+#nda button:disabled{background:#9DAABB}
+#nda .msg{font-size:13px;color:#B42318;margin-top:8px;min-height:16px}
+#nda .hidden{display:none}
+</style>
+<script>
+(function(){
+  if(location.hash==="#comite")return;
+  var KEY="mc2026-foto-jurado-confidencialidad-v1";
+  var VERSION="Acuerdo de confidencialidad del jurado · Concurso Interno de Fotografía 2026 · v1 (04-nov-2026)";
+  var prev=null;try{prev=JSON.parse(localStorage.getItem(KEY)||"null")||S.nda||null;}catch(e){}
+  var wrap=document.createElement("div");wrap.id="nda";wrap.setAttribute("role","dialog");wrap.setAttribute("aria-modal","true");
+  wrap.innerHTML=
+    '<div class="box"><div class="hd"><small>MES DE LA CALIDAD 2026 · CELEC SUR · FOTOGRAFÍA</small><h2 id="nda-t">Identificación del jurado</h2><span class="st" id="nda-st">Paso 1 de 2</span></div>'+
+    '<div id="nda-p1"><div class="bd"><p class="intro">Antes de calificar, escriba sus datos. En el siguiente paso deberá leer y aceptar el Acuerdo de Confidencialidad del jurado.</p>'+
+    '<label class="f" for="nda-in">Nombres y apellidos</label><input type="text" id="nda-in" autocomplete="name" placeholder="Nombres y apellidos completos">'+
+    '<label class="f" for="nda-ic">Cédula de identidad</label><input type="text" id="nda-ic" inputmode="numeric" placeholder="Número de cédula">'+
+    '<div class="msg" id="nda-m1"></div></div><div class="ft r"><button id="nda-next" disabled>Continuar</button></div></div>'+
+    '<div id="nda-p2" class="hidden"><div class="bd"><div class="txt" tabindex="0">'+
+    '<p>Yo, <b id="nda-n"></b>, con cédula de identidad número <b id="nda-c"></b>, de manera libre y voluntaria, en calidad de MIEMBRO DEL JURADO CALIFICADOR del Concurso Interno de Fotografía del Mes de la Calidad 2026, suscribo el presente Acuerdo de Confidencialidad.</p>'+
+    '<p>Me comprometo a guardar absoluto sigilo y reserva sobre la información de la Unidad de Negocio CELEC SUR de la Empresa Pública Estratégica Corporación Eléctrica del Ecuador CELEC EP que llegue a mi conocimiento como resultado de mi participación como jurado, incluidas las fotografías postuladas, sus textos, los datos de los participantes y las instalaciones que aparecen en ellas, así como las calificaciones y deliberaciones del jurado.</p>'+
+    '<p>Me comprometo a no usar, ni disponer, ni divulgar, ni publicar por cualquier medio las fotografías o dicha información, ni a compartir las calificaciones con terceros, ni utilizarlas para fines ajenos a la evaluación del concurso. Los resultados solo podrán darse a conocer una vez publicados oficialmente por el Comité Organizador.</p>'+
+    '<p>Declaro que calificaré con objetividad e imparcialidad y que me excusaré de evaluar las fotografías de las que sea autor, en las que aparezca o en las que tenga conflicto de interés.</p>'+
+    '<p>Ratifico que me he informado y que quedo sometido a la normativa pertinente sobre la materia; principalmente, quedo advertido de las consecuencias que para estos casos establece la Corporación Eléctrica del Ecuador CELEC EP y la legislación ecuatoriana.</p>'+
+    '<p style="margin:0">Los compromisos establecidos en el presente Acuerdo de Confidencialidad se mantendrán vigentes desde su aceptación, sin límite.</p>'+
+    '</div><label class="chk"><input type="checkbox" id="nda-ok"><span><b>Acepto</b> el Acuerdo de Confidencialidad y me comprometo a cumplirlo.</span></label></div>'+
+    '<div class="ft"><button class="sec" id="nda-back">Volver</button><button id="nda-go" disabled>Aceptar y continuar</button></div></div></div>';
+  document.body.appendChild(wrap);document.documentElement.style.overflow="hidden";
+  var $n=function(id){return document.getElementById(id);};
+  var iN=$n("nda-in"),iC=$n("nda-ic"),next=$n("nda-next"),m1=$n("nda-m1"),ok=$n("nda-ok"),go2=$n("nda-go");
+  var name=function(){return iN.value.replace(/\s+/g," ").trim();},ced=function(){return iC.value.replace(/\D/g,"");};
+  function valid(){var a=name().split(" ").filter(Boolean).length>=2,b=ced().length===10;m1.textContent=(iN.value&&!a)?"Escriba al menos un nombre y un apellido.":(iC.value&&!b)?"La cédula debe tener 10 dígitos.":"";return a&&b;}
+  function upd1(){next.disabled=!valid();}
+  iN.value=(prev&&prev.nombre)||S.juror||"";iC.value=(prev&&prev.cedula)||S.cedula||"";
+  iN.addEventListener("input",upd1);iC.addEventListener("input",upd1);
+  function step(k){$n("nda-p1").classList.toggle("hidden",k!==1);$n("nda-p2").classList.toggle("hidden",k!==2);
+    $n("nda-t").textContent=k===1?"Identificación del jurado":"Acuerdo de confidencialidad";$n("nda-st").textContent="Paso "+k+" de 2";
+    if(k===2){$n("nda-n").textContent=name();$n("nda-c").textContent=ced();ok.checked=false;go2.disabled=true;wrap.scrollTop=0;}}
+  next.addEventListener("click",function(){if(valid())step(2);});
+  $n("nda-back").addEventListener("click",function(){step(1);});
+  ok.addEventListener("change",function(){go2.disabled=!ok.checked;});
+  go2.addEventListener("click",function(){if(go2.disabled||!valid())return;var now=new Date().toISOString();
+    var rec={acepta:true,nombre:name(),cedula:ced(),fecha:(prev&&prev.acepta&&prev.nombre===name()&&prev.fecha)||now,ultimaAceptacion:now,version:VERSION};
+    try{localStorage.setItem(KEY,JSON.stringify(rec));}catch(e){}
+    S.nda=rec;S.juror=rec.nombre;S.cedula=rec.cedula;$n("juror").value=rec.nombre;$n("cedula").value=rec.cedula;save();render();
+    wrap.remove();document.documentElement.style.overflow="";});
+  upd1();step(1);
+})();
+</script>
+</body>
+</html>
