@@ -92,16 +92,16 @@ input:focus,select:focus{outline:none;border-color:var(--navy2)}
 const EVENTO="Jornada de la Calidad · CELEC SUR · 27/11/2026";
 const SAL="CSR-CALIDAD-2026";
 const GAMES={
- trivia:{nombre:"Trivia Relámpago SGI",ico:"?",color:"#D7263D",pref:"TR",
+ trivia:{nombre:"Trivia Relámpago SGI",ico:'<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>',color:"#D7263D",pref:"TR",
    desc:"3 preguntas fáciles de calidad. Cada error suma 5 segundos.",
    reglas:"Responde lo más rápido posible. Cada respuesta incorrecta suma 5 s a tu tiempo."},
- memoria:{nombre:"Memoria de la Calidad",ico:"M",color:"#1B998B",pref:"ME",
+ memoria:{nombre:"Memoria de la Calidad",ico:'<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"><rect x="3" y="5" width="10" height="14" rx="2" transform="rotate(-8 8 12)"/><rect x="11" y="4" width="10" height="14" rx="2" fill="rgba(255,255,255,.25)" transform="rotate(8 16 11)"/><path d="m14 11 1.5 1.5L18.5 9" stroke-linecap="round"/></svg>',color:"#1B998B",pref:"ME",
    desc:"Encuentra 3 parejas: cada norma o herramienta con su tema. Cada intento fallido suma 1 segundo.",
    reglas:"Voltea dos tarjetas: una norma o herramienta y su tema. Cada pareja fallida suma 1 s."},
- palabras:{nombre:"Descifra la Calidad",ico:"Aa",color:"#F2B705",pref:"PA",
+ palabras:{nombre:"Descifra la Calidad",ico:'<svg viewBox="0 0 24 24" width="32" height="32"><g fill="#fff"><rect x="1.5" y="7" width="6.5" height="9" rx="1.6"/><rect x="8.75" y="7" width="6.5" height="9" rx="1.6" opacity=".85"/><rect x="16" y="7" width="6.5" height="9" rx="1.6" opacity=".7"/></g><g fill="#0A2463" font-family="Arial" font-weight="700" font-size="6.5" text-anchor="middle"><text x="4.75" y="13.6">C</text><text x="12" y="13.6">S</text><text x="19.25" y="13.6">R</text></g></svg>',color:"#F2B705",pref:"PA",
    desc:"Ordena las letras y forma 3 palabras clave del Sistema de Gestión. Pista o salto con penalización.",
    reglas:"Toca las letras en orden para formar la palabra. Error: +3 s · Pista: +5 s · Saltar: +20 s."},
- crucigrama:{nombre:"Crucigrama Exprés",ico:"#",color:"#3A86FF",pref:"CR",
+ crucigrama:{nombre:"Crucigrama Exprés",ico:'<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="1.8"><rect x="3" y="3" width="6" height="6" rx="1" fill="rgba(255,255,255,.3)"/><rect x="9" y="3" width="6" height="6" rx="1"/><rect x="15" y="3" width="6" height="6" rx="1"/><rect x="3" y="9" width="6" height="6" rx="1"/><rect x="3" y="15" width="6" height="6" rx="1"/><rect x="9" y="15" width="6" height="6" rx="1" fill="rgba(255,255,255,.3)"/></svg>',color:"#3A86FF",pref:"CR",
    desc:"Mini crucigrama de 3 palabras de la calidad. Cada letra equivocada suma 3 segundos.",
    reglas:"Toca una casilla y escribe. Al llenar todo se revisa solo: cada letra equivocada suma 3 s y se borra. Pista: +5 s."}
 };
@@ -160,14 +160,23 @@ function home(){
  app.innerHTML=head("Retos de la Calidad",1)+Object.entries(GAMES).map(([k,g])=>`<div class="card"><a class="game-link" href="#${k}"><div class="ico" style="background:${g.color}">${g.ico}</div><div><h3>${g.nombre}</h3><p>${g.desc}</p></div></a></div>`).join("")+`<p class="foot">Unidad de Negocio CELEC SUR · Calidad y Procesos</p>`;
 }
 
+const MSF="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=YwZGADauo0GhNQj4oGAVsEfKtLAAyaRAkkh47GXIEmpUMk9NNE9OMkM3MVFERzg5QzZNRFlSMTRTTS4u";
+const Q={nombre:"r9130de22b2c14d979defb68ddb184f0e",reto:"r7617bed829c043eab0f3b6240d4b04a2",aciertos:"racddd9816ce043edaae5b3d130fcf9be",tiempo:"r2fc75c49f0914037bae96dea0c86eb4d",detalle:"r7740dfc726ea40d6a3e059e79baddf39"};
+let jugador="";try{jugador=localStorage.getItem("csr_nombre")||""}catch(e){}
+function linkForms(g,acc,totalMs,detail){
+ const hora=new Date().toLocaleTimeString("es-EC",{hour:"2-digit",minute:"2-digit",second:"2-digit"});
+ const v={nombre:jugador,reto:GAMES[g].nombre,aciertos:acc,tiempo:(totalMs/1000).toFixed(1).replace(".",","),detalle:Object.entries(detail).map(([k,x])=>k+": "+x).join(" · ")+" · Hora: "+hora};
+ return MSF+Object.keys(Q).map(k=>"&"+Q[k]+"="+encodeURIComponent(v[k])).join("");
+}
 function intro(g){
  const G=GAMES[g];
  app.innerHTML=head(G.nombre)+`<div class="card">
  <p style="margin:0 0 6px;font-size:16px">${G.reglas}</p>
- <p class="note">Gana quien termine en el <b>menor tiempo</b>.</p>
+ <p class="note">Gana quien termine con más aciertos en el <b>menor tiempo</b>.</p>
+ <label for="nm">Nombres y apellidos</label><input id="nm" autocomplete="name" value="${esc(jugador)}">
  <button class="btn" id="go">¡Empezar!</button>
  <a class="btn sec" href="#" style="text-align:center;text-decoration:none">Ver los otros retos</a></div>`;
- $("#go").onclick=()=>({trivia,memoria,palabras,crucigrama})[g]();
+ $("#go").onclick=()=>{const n=$("#nm").value.trim().replace(/\s+/g," ");if(n.split(" ").length<2){toast("Escribe tus nombres y apellidos");$("#nm").focus();return}jugador=n;try{localStorage.setItem("csr_nombre",n)}catch(e){}({trivia,memoria,palabras,crucigrama})[g]()};
 }
 
 function hud(g,extra){return `<div class="hud"><small>${GAMES[g].nombre}</small><span class="t" id="clk">0.0 s</span><small id="ex">${extra||""}</small></div>`}
@@ -183,7 +192,7 @@ function trivia(){
   let locked=false;
   document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{if(locked)return;locked=true;
    if(b.textContent===Q.ok){b.classList.add("ok")}else{b.classList.add("bad");errs++;addPen(5000);document.querySelectorAll(".opt").forEach(x=>{if(x.textContent===Q.ok)x.classList.add("ok")})}
-   setTimeout(()=>{i++;if(i<3)show();else finish("trivia",{"Aciertos":(3-errs)+" de 3","Penalización":"+"+errs*5+" s"})},650)})};
+   setTimeout(()=>{i++;if(i<3)show();else finish("trivia",{"Aciertos":(3-errs)+" de 3","Penalización":"+"+errs*5+" s"},(3-errs)+"/3")},650)})};
  show();
 }
 
@@ -199,7 +208,7 @@ function memoria(){
   if(open.length<2)return;
   const [x,y]=open;const cx=cards[x.dataset.i],cy=cards[y.dataset.i];
   if(cx.k===cy.k){x.classList.replace("up","done");y.classList.replace("up","done");open=[];pairs++;$("#ex").textContent=pairs+"/3";
-   if(pairs===3)setTimeout(()=>finish("memoria",{"Parejas":"3 de 3","Intentos fallidos":fails,"Penalización":"+"+fails+" s"}),400)}
+   if(pairs===3)setTimeout(()=>finish("memoria",{"Parejas":"3 de 3","Intentos fallidos":fails,"Penalización":"+"+fails+" s"},"3/3"),400)}
   else{busy=true;fails++;addPen(1000);setTimeout(()=>{x.classList.remove("up");y.classList.remove("up");x.classList.add("back");y.classList.add("back");open=[];busy=false},800)}
  });
 }
@@ -220,7 +229,7 @@ function palabras(){
   <div class="row"><button class="btn sec" id="bk">Borrar</button><button class="btn sec" id="hn">Pista +5 s</button><button class="btn sec" id="sk">Saltar +20 s</button></div>`;
   const slots=[...pz.querySelectorAll(".slot")],tiles=[...pz.querySelectorAll(".tile")];
   const paint=()=>{slots.forEach((s,k)=>{s.textContent=built[k]?built[k].l:"";s.classList.toggle("f",!!built[k]);s.style.background=k<fixed?"#d9f5ef":""});tiles.forEach(t=>t.classList.toggle("used",built.some(b=>b&&b.j==t.dataset.j)))};
-  const next=()=>{i++;if(i<3)show();else finish("palabras",{"Palabras":"3","Errores":stats.errores+" (+"+stats.errores*3+" s)","Pistas":stats.pistas+" (+"+stats.pistas*5+" s)","Saltos":stats.saltos+" (+"+stats.saltos*20+" s)"})};
+  const next=()=>{i++;if(i<3)show();else finish("palabras",{"Palabras":"3","Errores":stats.errores+" (+"+stats.errores*3+" s)","Pistas":stats.pistas+" (+"+stats.pistas*5+" s)","Saltos":stats.saltos+" (+"+stats.saltos*20+" s)"},(3-stats.saltos)+"/3")};
   tiles.forEach(t=>t.onclick=()=>{if(built.length>=w.length)return;built.push({l:t.textContent,j:t.dataset.j});paint();
    if(built.length===w.length){if(built.map(b=>b.l).join("")===w){slots.forEach(s=>s.style.background="#d9f5ef");setTimeout(next,450)}
     else{stats.errores++;addPen(3000);$("#sl").classList.add("shake");setTimeout(()=>{$("#sl").classList.remove("shake");built=built.slice(0,fixed);paint()},400)}}});
@@ -247,7 +256,7 @@ function crucigrama(){
  const pick=(k,keep)=>{if(!keep){const ws=words.map((o,i)=>i).filter(i=>words[i].cells.includes(k));if(!ws.includes(cur))cur=ws[0];else if(pos===k&&ws.length>1)cur=ws.find(i=>i!==cur)}pos=k;paint();const e=inp(k);e.focus({preventScroll:true})};
  const step=dir=>{const cs=words[cur].cells;let i=cs.indexOf(pos)+dir;while(i>=0&&i<cs.length&&inp(cs[i]).classList.contains("ok"))i+=dir;if(i>=0&&i<cs.length)pick(cs[i],true)};
  const check=()=>{if(!all.every(e=>e.value))return;let bad=0;all.forEach(e=>{if(e.value.toUpperCase()===sol[e.dataset.k]){e.classList.add("ok");e.readOnly=true}else{bad++;e.classList.add("bad")}});
-  if(!bad){setTimeout(()=>finish("crucigrama",{"Palabras":"3 de 3","Letras equivocadas":st.err+" (+"+st.err*3+" s)","Pistas":st.pis+" (+"+st.pis*5+" s)"}),500);return}
+  if(!bad){setTimeout(()=>finish("crucigrama",{"Palabras":"3 de 3","Letras equivocadas":st.err+" (+"+st.err*3+" s)","Pistas":st.pis+" (+"+st.pis*5+" s)"},"3/3"),500);return}
   st.err+=bad;addPen(bad*3000);document.querySelector(".cw").classList.add("shake");
   setTimeout(()=>{document.querySelector(".cw").classList.remove("shake");all.forEach(e=>{if(e.classList.contains("bad")){e.value="";e.classList.remove("bad")}});const f=all.find(e=>!e.value);if(f)pick(f.dataset.k)},500)};
  all.forEach(e=>{
@@ -263,14 +272,15 @@ function crucigrama(){
 function confetti(){const cols=["#F2B705","#D7263D","#1B998B","#3A86FF","#fff"];for(let i=0;i<70;i++){const d=document.createElement("i");d.className="conf";d.style.left=Math.random()*100+"vw";d.style.background=cols[i%5];d.style.animationDuration=(1.6+Math.random()*1.6)+"s";d.style.animationDelay=Math.random()*.5+"s";document.body.appendChild(d);setTimeout(()=>d.remove(),4000)}}
 
 /* ---------- RESULTADO ---------- */
-function finish(g,detail){
+function finish(g,detail,acc){
  const raw=stopClock();const total=Math.round((raw+penal)/100)*100;
  app.innerHTML=head("¡Reto completado!")+`<div class="card res">
- <div style="font-weight:700;color:var(--muted)">${GAMES[g].nombre}</div>
+ <div style="font-weight:700;color:var(--muted)">${esc(jugador)} · ${GAMES[g].nombre}</div>
  <div class="big">${fmt(total)}</div>
  <table>${Object.entries(detail).map(([k,v])=>`<tr><td>${k}</td><td>${v}</td></tr>`).join("")}</table>
- <p style="font-weight:700;margin:6px 0 0">Muestra esta pantalla en el stand de Calidad.</p>
- <a class="btn" href="#" style="text-decoration:none">Jugar otro reto</a></div>`;
+ <a class="btn" id="reg" href="${linkForms(g,acc,total,detail)}" target="_blank" rel="noopener" style="text-decoration:none;font-size:18px">Registrar mi resultado</a>
+ <p class="note" style="margin-top:6px">Se abre un formulario ya lleno: solo pulsa <b>Enviar</b>.</p>
+ <a class="btn sec" href="#" style="text-decoration:none">Jugar otro reto</a></div>`;
  confetti();
 }
 
