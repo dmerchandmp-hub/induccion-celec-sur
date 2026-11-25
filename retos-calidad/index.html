@@ -93,11 +93,11 @@ const EVENTO="Jornada de la Calidad · CELEC SUR · 27/11/2026";
 const SAL="CSR-CALIDAD-2026";
 const GAMES={
  trivia:{nombre:"Trivia Relámpago SGI",ico:"?",color:"#D7263D",pref:"TR",
-   desc:"3 preguntas de calidad, ambiente, seguridad y antisoborno. Cada error suma 5 segundos.",
+   desc:"3 preguntas fáciles de calidad. Cada error suma 5 segundos.",
    reglas:"Responde lo más rápido posible. Cada respuesta incorrecta suma 5 s a tu tiempo."},
- memoria:{nombre:"Memoria 5S",ico:"5S",color:"#1B998B",pref:"ME",
-   desc:"Encuentra 3 parejas: cada palabra japonesa con su significado. Cada intento fallido suma 1 segundo.",
-   reglas:"Voltea dos tarjetas: una palabra y su significado. Cada pareja fallida suma 1 s."},
+ memoria:{nombre:"Memoria de la Calidad",ico:"M",color:"#1B998B",pref:"ME",
+   desc:"Encuentra 3 parejas: cada norma o herramienta con su tema. Cada intento fallido suma 1 segundo.",
+   reglas:"Voltea dos tarjetas: una norma o herramienta y su tema. Cada pareja fallida suma 1 s."},
  palabras:{nombre:"Descifra la Calidad",ico:"Aa",color:"#F2B705",pref:"PA",
    desc:"Ordena las letras y forma 3 palabras clave del Sistema de Gestión. Pista o salto con penalización.",
    reglas:"Toca las letras en orden para formar la palabra. Error: +3 s · Pista: +5 s · Saltar: +20 s."},
@@ -108,34 +108,32 @@ const GAMES={
 const AREAS=["Gerencia","Subgerencia de Gestión Organizacional","Subgerencia Administrativa Financiera","Subgerencia de Producción","Talento Humano","Jurídico","Central Molino","Central Mazar","Central Sopladora","Central Alazán","Central Minas San Francisco","Otra"];
 
 const TRIVIA=[
- ["¿Qué norma ISO corresponde al Sistema de Gestión Antisoborno?",["ISO 37001","ISO 14001","ISO 45001","ISO 27001"]],
- ["¿Qué significan las siglas PHVA?",["Planificar, Hacer, Verificar, Actuar","Proponer, Hacer, Validar, Archivar","Planear, Habilitar, Vigilar, Auditar","Priorizar, Hacer, Verificar, Avanzar"]],
- ["ISO 45001 se enfoca en la gestión de…",["Seguridad y salud en el trabajo","Calidad del servicio","Seguridad de la información","Energía"]],
- ["ISO 14001 es la norma del Sistema de Gestión…",["Ambiental","De calidad","Antisoborno","Financiera"]],
- ["En la metodología 5S, «Seiton» significa…",["Ordenar","Clasificar","Limpiar","Disciplina"]],
- ["Una acción correctiva busca…",["Eliminar la causa raíz de una no conformidad","Ocultar el problema hasta la auditoría","Sancionar al responsable","Cerrar el hallazgo sin evidencia"]],
- ["El diagrama de causa-efecto también se conoce como…",["Diagrama de Ishikawa","Diagrama de Gantt","Diagrama de Pareto","Histograma"]],
- ["El diagrama de Pareto se basa en la regla…",["80/20","50/50","90/10","70/30"]],
- ["¿Qué principio de la ISO 9001 pone en el centro a quien recibe nuestro servicio?",["Enfoque al cliente","Liderazgo","Toma de decisiones","Gestión de las relaciones"]],
- ["Cuando una organización integra calidad, ambiente y SST en un solo sistema, se habla de…",["Sistema de Gestión Integrado","Sistema de Gestión Aislado","Manual de funciones","Plan operativo"]],
- ["El Día Mundial de la Calidad se celebra…",["El segundo jueves de noviembre","El 1 de mayo","El último viernes de diciembre","El 5 de junio"]],
- ["La auditoría interna sirve para…",["Verificar que el sistema cumple los requisitos y es eficaz","Buscar culpables","Reemplazar a la auditoría externa","Aprobar el presupuesto"]]
+ ["¿Qué celebramos este mes en CELEC SUR?",["El Mes de la Calidad","El Mes del Deporte","El Mes de la Música","El Mes del Cine"]],
+ ["¿Cuál es la norma ISO de Calidad?",["ISO 9001","ISO 1234","ISO 5555","ISO 7777"]],
+ ["La norma ISO 14001 cuida…",["El ambiente","El tráfico","La comida","La moda"]],
+ ["La norma ISO 45001 cuida…",["La seguridad y salud de los trabajadores","Los paisajes","El clima","Los vehículos"]],
+ ["La norma ISO 37001 combate…",["El soborno","El ruido","El frío","El cansancio"]],
+ ["En el ciclo PHVA, ¿qué significa la P?",["Planificar","Pintar","Pasear","Preguntar"]],
+ ["Las 5S ayudan a tener el lugar de trabajo…",["Ordenado y limpio","Más ruidoso","Más oscuro","Desordenado"]],
+ ["Con un buen servicio, ¿a quién debemos satisfacer?",["Al cliente","A nadie","A la competencia","Solo a mí"]],
+ ["Mejora continua significa…",["Hacer las cosas cada día un poco mejor","Hacer siempre lo mismo","Trabajar sin revisar","Esperar a que otro mejore"]],
+ ["Un indicador sirve para…",["Medir cómo vamos","Decorar la oficina","Adivinar","Perder tiempo"]],
+ ["Si encuentro un problema en un proceso, lo mejor es…",["Reportarlo y buscar su causa","Esconderlo","Ignorarlo","Culpar a otro"]],
+ ["¿Qué significa SGI?",["Sistema de Gestión Integrado","Servicio General de Internet","Sala de Gerencia Interna","Sistema de Guardias Industriales"]]
 ];
-const MEMO=[["Seiri","Clasificar"],["Seiton","Ordenar"],["Seiso","Limpiar"],["Seiketsu","Estandarizar"],["Shitsuke","Disciplina"],["Kaizen","Mejora continua"]];
+const MEMO=[["ISO 9001","Calidad"],["ISO 14001","Ambiente"],["ISO 45001","Seguridad y salud"],["ISO 37001","Antisoborno"],["5S","Orden y limpieza"],["PHVA","Mejora continua"]];
 const PALABRAS=[
- ["CALIDAD","Grado en que un conjunto de características cumple con los requisitos."],
- ["PROCESO","Actividades relacionadas que transforman entradas en salidas."],
- ["RIESGO","Efecto de la incertidumbre."],
- ["MEJORA","Lo que buscamos de forma continua con el ciclo PHVA."],
- ["CLIENTE","Persona u organización que recibe un producto o servicio."],
- ["INDICADOR","Mide el desempeño de un proceso."],
- ["EVIDENCIA","Lo que pide el auditor para demostrar que algo se cumple."],
- ["AUDITORIA","Proceso sistemático e independiente para obtener evidencias."]
+ ["CALIDAD","Lo que celebramos este mes."],
+ ["EQUIPO","Trabajamos juntos como un…"],
+ ["CLIENTE","La persona a quien servimos."],
+ ["NORMA","La ISO 9001 es una…"],
+ ["ORDEN","Lo que logran las 5S junto con la limpieza."],
+ ["MEJORA","Cambio para bien: la buscamos de forma continua."]
 ];
 
 const CRUCI={w:7,h:7,words:[
- {n:1,d:"a",r:0,c:0,w:"CALIDAD",clue:"Lo que celebramos este mes: cumplir los requisitos."},
- {n:1,d:"d",r:0,c:0,w:"CLIENTE",clue:"La ISO 9001 pide ponerlo en el centro."},
+ {n:1,d:"a",r:0,c:0,w:"CALIDAD",clue:"Lo que celebramos este mes."},
+ {n:1,d:"d",r:0,c:0,w:"CLIENTE",clue:"La persona a quien servimos."},
  {n:2,d:"a",r:4,c:0,w:"NORMA",clue:"La ISO 9001, la 14001 o la 45001 son una…"}]};
 const $=s=>document.querySelector(s);
 const app=$("#app");
@@ -191,7 +189,7 @@ function trivia(){
 
 /* ---------- MEMORIA ---------- */
 function memoria(){
- const cards=shuffle(shuffle(MEMO).slice(0,3).flatMap(([a,b],k)=>[{k,t:a,tag:"japonés"},{k,t:b,tag:"significado"}]));
+ const cards=shuffle(shuffle(MEMO).slice(0,3).flatMap(([a,b],k)=>[{k,t:a,tag:"norma / herramienta"},{k,t:b,tag:"tema"}]));
  let open=[],pairs=0,fails=0,busy=false;
  app.innerHTML=hud("memoria","0/3")+`<div class="card"><div class="grid">${cards.map((c,i)=>`<button class="mc back" data-i="${i}"><span>${c.t}<span class="tag">${c.tag}</span></span></button>`).join("")}</div></div>`;
  startClock();
