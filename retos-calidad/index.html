@@ -144,7 +144,7 @@ const fmt=ms=>{const s=ms/1000;const m=Math.floor(s/60);return (m?m+":"+String(M
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 function toast(t){const e=$("#toast");e.textContent=t;e.classList.add("on");clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove("on"),1300)}
 function hash(str){let h=2166136261>>>0;for(const ch of str){h^=ch.codePointAt(0);h=Math.imul(h,16777619)>>>0}return h}
-function code(game,name,totalDs){const n=name.trim().toUpperCase().normalize("NFD").replace(/[̀-ͯ]/g,"");const h=hash(SAL+"|"+game+"|"+n+"|"+totalDs).toString(36).toUpperCase().padStart(6,"0").slice(-5);return GAMES[game].pref+"-"+h}
+function code(game,name,totalDs){const n=name.trim().replace(/\s+/g," ").toUpperCase().normalize("NFD").replace(/[̀-ͯ]/g,"");const h=hash(SAL+"|"+game+"|"+n+"|"+totalDs).toString(36).toUpperCase().padStart(6,"0").slice(-5);return GAMES[game].pref+"-"+h}
 function store(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(k));localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}}
 
 let player=store("csr_jugador")||{nombre:"",area:""};
@@ -299,7 +299,7 @@ function verifier(){
  <label>Tiempo total en segundos (ej.: 42.3 o 1:05.2)</label><input id="vt" inputmode="decimal">
  <label>Código mostrado</label><input id="vc" style="text-transform:uppercase">
  <button class="btn" id="vb">Verificar</button><p id="vr" style="font-weight:800;font-size:18px;text-align:center"></p></div>`;
- $("#vb").onclick=()=>{let t=$("#vt").value.trim().replace(",",".").replace(/\s*s$/,"");let sec=t.includes(":")?(+t.split(":")[0])*60+(+t.split(":")[1]):+t;const ds=Math.round(sec*10)/10;
+ $("#vb").onclick=()=>{const vr=$("#vr");if(!$("#vn").value.trim()||!$("#vt").value.trim()||!$("#vc").value.trim()){vr.textContent="Completa nombre, tiempo y código";vr.style.color="#5b6b8c";return}let t=$("#vt").value.trim().replace(",",".").replace(/\s*s$/,"");let sec=t.includes(":")?(+t.split(":")[0])*60+(+t.split(":")[1]):+t;const ds=Math.round(sec*10)/10;
   const ok=code($("#vg").value,$("#vn").value,ds)===$("#vc").value.trim().toUpperCase();
   $("#vr").textContent=ok?"✔ Código válido":"✘ No coincide";$("#vr").style.color=ok?"#1B998B":"#D7263D"};
 }
